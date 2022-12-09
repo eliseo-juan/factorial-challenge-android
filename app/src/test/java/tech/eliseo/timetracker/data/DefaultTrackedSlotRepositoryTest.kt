@@ -25,6 +25,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import tech.eliseo.timetracker.data.local.database.TrackedSlot
 import tech.eliseo.timetracker.data.local.database.TrackedSlotDao
+import tech.eliseo.timetracker.data.repository.DefaultTrackedSlotRepository
 
 /**
  * Unit tests for [DefaultTrackedSlotRepository].

@@ -19,37 +19,38 @@ package tech.eliseo.timetracker.ui.trackedslot
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import tech.eliseo.timetracker.data.TrackedSlotRepository
-import tech.eliseo.timetracker.ui.trackedslot.TrackedSlotUiState.Error
+import tech.eliseo.timetracker.domain.model.TrackedSlot
+import tech.eliseo.timetracker.domain.usecase.GetLastTrackedSlotUseCase
+import tech.eliseo.timetracker.domain.usecase.GetTrackedSlotListUseCase
 import tech.eliseo.timetracker.ui.trackedslot.TrackedSlotUiState.Loading
 import tech.eliseo.timetracker.ui.trackedslot.TrackedSlotUiState.Success
 import javax.inject.Inject
 
 @HiltViewModel
 class TrackedSlotViewModel @Inject constructor(
-    private val trackedSlotRepository: TrackedSlotRepository
+    private val getTrackedSlotListUseCase: GetTrackedSlotListUseCase,
+    getLastTrackedSlotUseCase: GetLastTrackedSlotUseCase
 ) : ViewModel() {
 
-    val uiState: StateFlow<TrackedSlotUiState> = trackedSlotRepository
-        .trackedSlots.map(::Success)
-        .catch { Error(it) }
+    val uiState: StateFlow<TrackedSlotUiState> = getLastTrackedSlotUseCase()
+        .map { Success(lastTrackedSlot = it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
     fun addTrackedSlot(name: String) {
         viewModelScope.launch {
-            trackedSlotRepository.add(name)
+
         }
     }
 }
 
-sealed interface TrackedSlotUiState {
-    object Loading : TrackedSlotUiState
-    data class Error(val throwable: Throwable) : TrackedSlotUiState
-    data class Success(val data: List<String>) : TrackedSlotUiState
+sealed class TrackedSlotUiState {
+    object Loading : TrackedSlotUiState()
+    data class Success(val lastTrackedSlot: TrackedSlot) : TrackedSlotUiState()
+}
+
+sealed class TrackedSlotUiEvent {
+    object OnTrackedClicked : TrackedSlotUiEvent()
+    object OnLastTrackedSlotClicked : TrackedSlotUiEvent()
 }

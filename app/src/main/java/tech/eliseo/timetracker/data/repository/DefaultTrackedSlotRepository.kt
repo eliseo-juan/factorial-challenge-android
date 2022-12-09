@@ -14,28 +14,27 @@
  * limitations under the License.
  */
 
-package tech.eliseo.timetracker.data
+package tech.eliseo.timetracker.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import tech.eliseo.timetracker.data.local.database.TrackedSlot
-import tech.eliseo.timetracker.data.local.database.TrackedSlotDao
+import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
+import tech.eliseo.timetracker.data.database.mapper.TrackedSlotDBMapper
+import tech.eliseo.timetracker.domain.model.TrackedSlot
+import tech.eliseo.timetracker.domain.repository.TrackedSlotRepository
 import javax.inject.Inject
-
-interface TrackedSlotRepository {
-    val trackedSlots: Flow<List<String>>
-
-    suspend fun add(name: String)
-}
 
 class DefaultTrackedSlotRepository @Inject constructor(
     private val trackedSlotDao: TrackedSlotDao
-) : TrackedSlotRepository {
+) : TrackedSlotRepository, TrackedSlotDBMapper {
 
-    override val trackedSlots: Flow<List<String>> =
-        trackedSlotDao.getTrackedSlots().map { items -> items.map { it.name } }
+    override val trackedSlots: Flow<List<TrackedSlot>> =
+        trackedSlotDao.getTrackedSlots().map { it.map { item -> item.toTrackedSlot() } }
 
-    override suspend fun add(name: String) {
-        trackedSlotDao.insertTrackedSlot(TrackedSlot(name = name))
+    override val lastTrackedSlot: Flow<TrackedSlot> =
+        trackedSlotDao.getLastTrackedSlot().map { item -> item.toTrackedSlot() }
+
+    override suspend fun add(trackedSlot: TrackedSlot) {
+        trackedSlotDao.insertTrackedSlot(trackedSlot.toTrackedSlotDB())
     }
 }

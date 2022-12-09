@@ -16,15 +16,10 @@
 
 package tech.eliseo.timetracker.ui.trackedslot
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DonutLarge
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,11 +33,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.datetime.*
 import tech.eliseo.timetracker.ui.theme.MyApplicationTheme
-import androidx.compose.material3.ExperimentalMaterial3Api
+import tech.eliseo.timetracker.domain.model.TrackedSlot
+import tech.eliseo.timetracker.ui.coponents.MainButton
+import tech.eliseo.timetracker.ui.coponents.NavigationButton
+import tech.eliseo.timetracker.ui.coponents.TrackedSlotView
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.Calendar
+import java.util.Date
 
 @Composable
-fun TrackedSlotScreen(modifier: Modifier = Modifier, viewModel: TrackedSlotViewModel = hiltViewModel()) {
+fun TrackedSlotScreen(
+    modifier: Modifier = Modifier,
+    viewModel: TrackedSlotViewModel = hiltViewModel()
+) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val items by produceState<TrackedSlotUiState>(
         initialValue = TrackedSlotUiState.Loading,
@@ -55,7 +61,7 @@ fun TrackedSlotScreen(modifier: Modifier = Modifier, viewModel: TrackedSlotViewM
     }
     if (items is TrackedSlotUiState.Success) {
         TrackedSlotScreen(
-            items = (items as TrackedSlotUiState.Success).data,
+            lastTrackedSlot = (items as TrackedSlotUiState.Success).lastTrackedSlot,
             onSave = viewModel::addTrackedSlot,
             modifier = modifier
         )
@@ -65,27 +71,36 @@ fun TrackedSlotScreen(modifier: Modifier = Modifier, viewModel: TrackedSlotViewM
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TrackedSlotScreen(
-    items: List<String>,
+    lastTrackedSlot: TrackedSlot?,
     onSave: (name: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier) {
-        var nameTrackedSlot by remember { mutableStateOf("Compose") }
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+    Scaffold(
+        modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(it)
+                .padding(16.dp)
         ) {
-            TextField(
-                value = nameTrackedSlot,
-                onValueChange = { nameTrackedSlot = it }
+            MainButton(
+                modifier = Modifier.padding(16.dp)
             )
-
-            Button(modifier = Modifier.width(96.dp), onClick = { onSave(nameTrackedSlot) }) {
-                Text("Save")
+            Spacer(modifier = Modifier.height(16.dp))
+            if (lastTrackedSlot != null) {
+                Text(
+                    text = "Última actividad",
+                    style = MaterialTheme.typography.labelMedium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                TrackedSlotView(trackedSlot = lastTrackedSlot)
             }
-        }
-        items.forEach {
-            Text("Saved item: $it")
+            Spacer(modifier = Modifier.height(16.dp))
+            NavigationButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Histórico",
+                icon = Icons.Outlined.DonutLarge
+            )
         }
     }
 }
@@ -96,7 +111,12 @@ internal fun TrackedSlotScreen(
 @Composable
 private fun DefaultPreview() {
     MyApplicationTheme {
-        TrackedSlotScreen(listOf("Compose", "Room", "Kotlin"), onSave = {})
+        TrackedSlotScreen(
+            TrackedSlot(
+                startDate = Clock.System.now().plus(90, DateTimeUnit.MINUTE).toLocalDateTime(TimeZone.currentSystemDefault()),
+                endDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+                category = "Prueba"
+            ), onSave = {})
     }
 }
 
@@ -104,6 +124,10 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        TrackedSlotScreen(listOf("Compose", "Room", "Kotlin"), onSave = {})
+        TrackedSlotScreen(TrackedSlot(
+            startDate = Clock.System.now().plus(90, DateTimeUnit.MINUTE).toLocalDateTime(TimeZone.currentSystemDefault()),
+            endDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+            category = "Prueba"
+        ), onSave = {})
     }
 }

@@ -14,28 +14,16 @@
  * limitations under the License.
  */
 
-package tech.eliseo.timetracker.data.local.database
+package tech.eliseo.timetracker.data.database
 
-import androidx.room.Dao
-import androidx.room.Entity
-import androidx.room.Insert
-import androidx.room.PrimaryKey
-import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import tech.eliseo.timetracker.data.database.converter.DateConverter
+import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
 
-@Entity
-data class TrackedSlot(
-    val name: String
-) {
-    @PrimaryKey(autoGenerate = true)
-    var uid: Int = 0
-}
-
-@Dao
-interface TrackedSlotDao {
-    @Query("SELECT * FROM trackedslot ORDER BY uid DESC LIMIT 10")
-    fun getTrackedSlots(): Flow<List<TrackedSlot>>
-
-    @Insert
-    suspend fun insertTrackedSlot(item: TrackedSlot)
+@Database(entities = [TrackedSlotDB::class], version = 1)
+@TypeConverters(DateConverter::class)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun trackedSlotDao(): TrackedSlotDao
 }

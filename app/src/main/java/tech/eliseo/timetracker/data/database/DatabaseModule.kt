@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tech.eliseo.timetracker.data.local.di
+package tech.eliseo.timetracker.data.database
 
 import android.content.Context
 import androidx.room.Room
@@ -23,14 +23,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import tech.eliseo.timetracker.data.local.database.AppDatabase
-import tech.eliseo.timetracker.data.local.database.TrackedSlotDao
+import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
 import javax.inject.Singleton
 
 
 @Module
 @InstallIn(SingletonComponent::class)
 class DatabaseModule {
+
     @Provides
     fun provideTrackedSlotDao(appDatabase: AppDatabase): TrackedSlotDao {
         return appDatabase.trackedSlotDao()
@@ -42,7 +42,7 @@ class DatabaseModule {
         return Room.databaseBuilder(
             appContext,
             AppDatabase::class.java,
-            "TrackedSlot"
+            "TimeTrackerDB"
         ).build()
     }
 }

@@ -14,26 +14,29 @@
  * limitations under the License.
  */
 
-package tech.eliseo.timetracker.data.di
+package tech.eliseo.timetracker.data.repository
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import tech.eliseo.timetracker.data.repository.DefaultTrackedSlotRepository
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
+import tech.eliseo.timetracker.data.database.mapper.TrackedSlotDBMapper
+import tech.eliseo.timetracker.domain.model.TrackedSlot
 import tech.eliseo.timetracker.domain.repository.TrackedSlotRepository
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-interface DataModule {
+class FakeTrackedSlotRepository @Inject constructor(
+    private val trackedSlotDao: TrackedSlotDao
+) : TrackedSlotRepository, TrackedSlotDBMapper {
 
-    @Singleton
-    @Binds
-    fun bindsTrackedSlotRepository(
-        trackedSlotRepository: DefaultTrackedSlotRepository
-    ): TrackedSlotRepository
+    override val trackedSlots: Flow<List<TrackedSlot>> =
+        flow { emit(emptyList()) }
+
+    override val lastTrackedSlot: Flow<TrackedSlot> =
+        emptyFlow()
+
+    override suspend fun add(trackedSlot: TrackedSlot) {
+
+    }
 }
