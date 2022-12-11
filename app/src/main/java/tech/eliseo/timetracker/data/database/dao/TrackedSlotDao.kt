@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import tech.eliseo.timetracker.data.database.TrackedSlotDB
+import tech.eliseo.timetracker.data.database.dto.TrackedSlotDB
 
 @Dao
 interface TrackedSlotDao {
@@ -14,6 +14,6 @@ interface TrackedSlotDao {
     @Insert
     suspend fun insertTrackedSlot(item: TrackedSlotDB)
 
-    @Query("SELECT * FROM trackedslotdb ORDER BY endDate DESC LIMIT 1")
-    fun getLastTrackedSlot(): Flow<TrackedSlotDB>
+    @Query("SELECT * FROM trackedslotdb")
+    fun getTrackedSlotsByDate(): Flow<List<TrackedSlotDB>>
 }

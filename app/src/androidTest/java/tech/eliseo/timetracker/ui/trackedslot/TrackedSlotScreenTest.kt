@@ -25,9 +25,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import tech.eliseo.timetracker.ui.screen.main.MainScreen
 
 /**
- * UI tests for [TrackedSlotScreen].
+ * UI tests for [MainScreen].
  */
 @RunWith(AndroidJUnit4::class)
 class TrackedSlotScreenTest {
@@ -38,7 +39,7 @@ class TrackedSlotScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            TrackedSlotScreen(FAKE_DATA, onSave = {})
+            MainScreen(FAKE_DATA, onSave = {})
         }
     }
 

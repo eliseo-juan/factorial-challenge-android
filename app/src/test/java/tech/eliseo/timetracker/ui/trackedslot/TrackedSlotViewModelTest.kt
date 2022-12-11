@@ -25,6 +25,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import tech.eliseo.timetracker.data.TrackedSlotRepository
+import tech.eliseo.timetracker.ui.screen.main.TrackedSlotUiState
+import tech.eliseo.timetracker.ui.screen.main.MainViewModel
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -35,13 +37,13 @@ import tech.eliseo.timetracker.data.TrackedSlotRepository
 class TrackedSlotViewModelTest {
     @Test
     fun uiState_initiallyLoading() = runTest {
-        val viewModel = TrackedSlotViewModel(FakeTrackedSlotRepository())
+        val viewModel = MainViewModel(FakeTrackedSlotRepository())
         assertEquals(viewModel.uiState.first(), TrackedSlotUiState.Loading)
     }
 
     @Test
     fun uiState_onItemSaved_isDisplayed() = runTest {
-        val viewModel = TrackedSlotViewModel(FakeTrackedSlotRepository())
+        val viewModel = MainViewModel(FakeTrackedSlotRepository())
         assertEquals(viewModel.uiState.first(), TrackedSlotUiState.Loading)
     }
 }

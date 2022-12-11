@@ -1,6 +1,6 @@
 package tech.eliseo.timetracker.data.database.mapper
 
-import tech.eliseo.timetracker.data.database.TrackedSlotDB
+import tech.eliseo.timetracker.data.database.dto.TrackedSlotDB
 import tech.eliseo.timetracker.domain.model.TrackedSlot
 
 interface TrackedSlotDBMapper {

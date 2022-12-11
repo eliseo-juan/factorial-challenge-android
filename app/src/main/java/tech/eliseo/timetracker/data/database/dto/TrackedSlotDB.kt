@@ -1,8 +1,8 @@
-package tech.eliseo.timetracker.data.database
+package tech.eliseo.timetracker.data.database.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 
 @Entity
 data class TrackedSlotDB(

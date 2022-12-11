@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "50329f69c51ff5ef5b4de2e34c9319ca",
+    "identityHash": "92a7139f99de45d4d13b4c32a0be00ad",
     "entities": [
       {
         "tableName": "TrackedSlotDB",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `startDate` INTEGER NOT NULL, `endDate` INTEGER NOT NULL, `category` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `startDate` TEXT NOT NULL, `endDate` TEXT NOT NULL, `category` TEXT)",
         "fields": [
           {
             "fieldPath": "uid",
@@ -17,13 +17,13 @@
           {
             "fieldPath": "startDate",
             "columnName": "startDate",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "endDate",
             "columnName": "endDate",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -46,7 +46,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '50329f69c51ff5ef5b4de2e34c9319ca')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '92a7139f99de45d4d13b4c32a0be00ad')"
     ]
   }
 }

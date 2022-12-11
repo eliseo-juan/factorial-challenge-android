@@ -20,11 +20,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import tech.eliseo.timetracker.data.repository.DefaultCurrentTrackingRepository
 import tech.eliseo.timetracker.data.repository.DefaultTrackedSlotRepository
+import tech.eliseo.timetracker.domain.repository.CurrentTrackingRepository
 import tech.eliseo.timetracker.domain.repository.TrackedSlotRepository
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
@@ -36,4 +35,10 @@ interface DataModule {
     fun bindsTrackedSlotRepository(
         trackedSlotRepository: DefaultTrackedSlotRepository
     ): TrackedSlotRepository
+
+    @Singleton
+    @Binds
+    fun bindsCurrentTrackingRepository(
+        trackedSlotRepository: DefaultCurrentTrackingRepository
+    ): CurrentTrackingRepository
 }

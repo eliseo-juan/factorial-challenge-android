@@ -1,7 +1,6 @@
 package tech.eliseo.timetracker.domain.model
 
-import kotlinx.datetime.LocalDateTime
-
+import java.time.LocalDateTime
 
 data class TrackedSlot(
     val startDate: LocalDateTime,

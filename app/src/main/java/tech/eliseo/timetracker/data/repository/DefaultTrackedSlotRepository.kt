@@ -16,12 +16,18 @@
 
 package tech.eliseo.timetracker.data.repository
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.flow.map
 import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
 import tech.eliseo.timetracker.data.database.mapper.TrackedSlotDBMapper
+import tech.eliseo.timetracker.domain.model.CurrentTracking
 import tech.eliseo.timetracker.domain.model.TrackedSlot
 import tech.eliseo.timetracker.domain.repository.TrackedSlotRepository
+import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class DefaultTrackedSlotRepository @Inject constructor(
@@ -29,10 +35,13 @@ class DefaultTrackedSlotRepository @Inject constructor(
 ) : TrackedSlotRepository, TrackedSlotDBMapper {
 
     override val trackedSlots: Flow<List<TrackedSlot>> =
-        trackedSlotDao.getTrackedSlots().map { it.map { item -> item.toTrackedSlot() } }
+        trackedSlotDao.getTrackedSlots()
+            .map { it.map { item -> item.toTrackedSlot() } }
 
-    override val lastTrackedSlot: Flow<TrackedSlot> =
-        trackedSlotDao.getLastTrackedSlot().map { item -> item.toTrackedSlot() }
+    override fun getTrackedSlotsByDate(date: LocalDate) : Flow<List<TrackedSlot>> {
+        return trackedSlotDao.getTrackedSlotsByDate()
+            .map { it.map { item -> item.toTrackedSlot() } }
+    }
 
     override suspend fun add(trackedSlot: TrackedSlot) {
         trackedSlotDao.insertTrackedSlot(trackedSlot.toTrackedSlotDB())

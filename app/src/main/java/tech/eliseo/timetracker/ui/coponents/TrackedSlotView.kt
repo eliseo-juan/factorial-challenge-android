@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,11 +15,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.datetime.*
 import tech.eliseo.timetracker.domain.model.TrackedSlot
+import tech.eliseo.timetracker.ui.formatter.CategoryFormatter
 import tech.eliseo.timetracker.ui.formatter.TrackedSlotFormatter
 import tech.eliseo.timetracker.ui.theme.MyApplicationTheme
-import java.time.Instant
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,17 +39,8 @@ fun TrackedSlotView(
                 .wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Image(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .size(40.dp)
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.Blue)
-                    .padding(8.dp),
-                imageVector = Icons.Filled.ShoppingCart,
-                contentDescription = "",
-                colorFilter = ColorFilter.tint(Color.White)
+            CategoryIconView(
+                modifier = Modifier.padding(4.dp)
             )
             Column(
                 modifier = Modifier
@@ -59,14 +49,14 @@ fun TrackedSlotView(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Trabajo",
+                    text = CategoryFormatter.getName(null),
                     maxLines = 1,
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelLarge
                 )
                 Text(
                     text = TrackedSlotFormatter.getDuration(trackedSlot),
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
             Column(
@@ -96,8 +86,8 @@ private fun DefaultPreview() {
         Box(Modifier.padding(0.dp)) {
             TrackedSlotView(
                 trackedSlot = TrackedSlot(
-                    startDate = Clock.System.now().plus(-90, DateTimeUnit.MINUTE).toLocalDateTime(TimeZone.currentSystemDefault()),
-                    endDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+                    startDate = LocalDateTime.now().minusHours(2),
+                    endDate = LocalDateTime.now(),
                     category = "Prueba"
                 )
             )

@@ -21,6 +21,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import tech.eliseo.timetracker.data.database.converter.DateConverter
 import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
+import tech.eliseo.timetracker.data.database.dto.TrackedSlotDB
 
 @Database(entities = [TrackedSlotDB::class], version = 1)
 @TypeConverters(DateConverter::class)

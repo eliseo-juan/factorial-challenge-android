@@ -2,14 +2,9 @@ package tech.eliseo.timetracker.domain
 
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import tech.eliseo.timetracker.domain.repository.TrackedSlotRepository
-import tech.eliseo.timetracker.domain.usecase.GetLastTrackedSlotUseCase
-import tech.eliseo.timetracker.domain.usecase.GetLastTrackedSlotUseCaseImpl
-import tech.eliseo.timetracker.domain.usecase.GetTrackedSlotListUseCase
-import tech.eliseo.timetracker.domain.usecase.GetTrackedSlotListUseCaseImpl
+import tech.eliseo.timetracker.domain.usecase.*
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -17,11 +12,26 @@ interface DomainModule {
 
     @Binds
     fun bindsGetLastTrackedSlotUseCase(
-        useCase: GetLastTrackedSlotUseCaseImpl
-    ): GetLastTrackedSlotUseCase
+        useCase: GetTodayTrackedSlotListUseCaseImpl
+    ): GetTodayTrackedSlotListUseCase
 
     @Binds
     fun bindsGetTrackedSlotListUseCase(
         useCase: GetTrackedSlotListUseCaseImpl
     ): GetTrackedSlotListUseCase
+
+    @Binds
+    fun bindsGetCurrentTrackingUseCase(
+        useCase: GetCurrentTrackingUseCaseImpl
+    ): GetCurrentTrackingUseCase
+
+    @Binds
+    fun bindsOnToggleTrackerUseCase(
+        useCase: OnToggleTrackerUseCaseImpl
+    ): OnToggleTrackerUseCase
+
+    @Binds
+    fun bindsGetCategoryListUseCase(
+        useCase: GetCategoryListUseCaseImpl
+    ): GetCategoryListUseCase
 }

@@ -3,11 +3,12 @@ package tech.eliseo.timetracker.domain.usecase
 import kotlinx.coroutines.flow.Flow
 import tech.eliseo.timetracker.domain.model.TrackedSlot
 import tech.eliseo.timetracker.domain.repository.TrackedSlotRepository
+import java.time.LocalDate
 import javax.inject.Inject
 
-class GetLastTrackedSlotUseCaseImpl @Inject constructor(
+class GetTodayTrackedSlotListUseCaseImpl @Inject constructor(
     private val repository: TrackedSlotRepository
-) : GetLastTrackedSlotUseCase {
+) : GetTodayTrackedSlotListUseCase {
 
-    override fun invoke(): Flow<TrackedSlot> = repository.lastTrackedSlot
+    override fun invoke(): Flow<List<TrackedSlot>> = repository.getTrackedSlotsByDate(date = LocalDate.now())
 }

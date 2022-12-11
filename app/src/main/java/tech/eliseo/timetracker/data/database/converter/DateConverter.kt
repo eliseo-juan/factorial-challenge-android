@@ -1,20 +1,21 @@
 package tech.eliseo.timetracker.data.database.converter
 
 import androidx.room.TypeConverter
-import kotlinx.datetime.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class DateConverter {
-
-    private val timeZone = TimeZone.of("UTC")
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
     @TypeConverter
-    fun fromTimestamp(value: Long?): LocalDateTime? {
-        return value?.let { Instant.fromEpochSeconds(it).toLocalDateTime(timeZone) }
+    fun toLocalDateTime(value: String?): LocalDateTime? {
+        return value?.let {
+            return formatter.parse(value, LocalDateTime::from)
+        }
     }
 
     @TypeConverter
-    fun dateToTimestamp(date: LocalDateTime?): Long? {
-        return date?.toInstant(timeZone)?.toEpochMilliseconds()
-
+    fun fromLocalDateTime(date: LocalDateTime?): String? {
+        return date?.format(formatter)
     }
 }

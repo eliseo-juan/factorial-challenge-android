@@ -3,7 +3,7 @@ package tech.eliseo.timetracker.domain.usecase
 import kotlinx.coroutines.flow.Flow
 import tech.eliseo.timetracker.domain.model.TrackedSlot
 
-interface GetLastTrackedSlotUseCase {
+interface GetTodayTrackedSlotListUseCase {
 
-    operator fun invoke() : Flow<TrackedSlot>
+    operator fun invoke() : Flow<List<TrackedSlot>>
 }
