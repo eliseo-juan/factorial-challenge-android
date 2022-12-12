@@ -5,8 +5,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import tech.eliseo.timetracker.data.database.dto.CategoryDB
-import tech.eliseo.timetracker.data.database.dto.TrackedSlotDB
-import tech.eliseo.timetracker.domain.model.Category
 
 @Dao
 interface CategoryDao {

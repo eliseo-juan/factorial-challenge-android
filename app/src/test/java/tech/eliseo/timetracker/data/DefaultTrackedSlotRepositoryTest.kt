@@ -16,17 +16,7 @@
 
 package tech.eliseo.timetracker.data
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Test
-import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
-
 import tech.eliseo.timetracker.data.repository.DefaultTrackedSlotRepository
-import tech.eliseo.timetracker.domain.model.TrackedSlot
 
 /**
  * Unit tests for [DefaultTrackedSlotRepository].

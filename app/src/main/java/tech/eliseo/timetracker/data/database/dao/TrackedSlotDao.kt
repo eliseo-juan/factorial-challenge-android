@@ -6,7 +6,6 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import tech.eliseo.timetracker.data.database.dto.TrackedSlotDB
-import java.time.LocalDateTime
 
 @Dao
 interface TrackedSlotDao {

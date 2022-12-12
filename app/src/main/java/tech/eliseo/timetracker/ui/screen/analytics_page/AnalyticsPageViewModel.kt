@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tech.eliseo.timetracker.ui.screen.categorylist
+package tech.eliseo.timetracker.ui.screen.analytics_page
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,9 +29,14 @@ import tech.eliseo.timetracker.domain.usecase.GetCategoryListUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryListViewModel @Inject constructor(
-    getCategoryListUseCase: GetCategoryListUseCase,
+class AnalyticsPageViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
+    get: GetCategoryListUseCase,
 ) : ViewModel() {
+
+    private val date: LocalDate
+        get() = savedStateHandle.get<Int>(KEY_PRODUCT_ID)
+            ?: throw IllegalStateException("Product id not found")
 
     val uiState: StateFlow<CategoryListUiState> = getCategoryListUseCase()
         .map {
@@ -54,10 +59,10 @@ class CategoryListViewModel @Inject constructor(
     }
 }
 
-sealed class CategoryListUiState {
-    object Loading : CategoryListUiState()
+sealed class AnalyticsPageUiState {
+    object Loading : AnalyticsPageUiState()
     data class Success(
-        val list: List<Category>
+        val list: List<TrackedSlot>
     ) : CategoryListUiState()
 }
 

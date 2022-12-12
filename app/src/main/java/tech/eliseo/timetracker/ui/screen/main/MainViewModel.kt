@@ -18,15 +18,15 @@ package tech.eliseo.timetracker.ui.screen.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import tech.eliseo.timetracker.domain.model.Category
 import tech.eliseo.timetracker.domain.model.CurrentTracking
 import tech.eliseo.timetracker.domain.model.TrackedSlot
-import tech.eliseo.timetracker.domain.repository.CategoryRepository
 import tech.eliseo.timetracker.domain.repository.TrackedSlotRepository
 import tech.eliseo.timetracker.domain.usecase.*
 import tech.eliseo.timetracker.ui.screen.main.TrackedSlotUiState.Loading

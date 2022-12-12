@@ -16,8 +16,8 @@
 
 package tech.eliseo.timetracker.data.repository
 
-import android.util.Log
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import tech.eliseo.timetracker.data.database.dao.CategoryDao
 import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
 import tech.eliseo.timetracker.data.database.dto.CategoryDB
@@ -25,13 +25,10 @@ import tech.eliseo.timetracker.data.database.dto.TrackedSlotDB
 import tech.eliseo.timetracker.data.database.mapper.CategoryDBMapper
 import tech.eliseo.timetracker.data.database.mapper.TrackedSlotDBMapper
 import tech.eliseo.timetracker.domain.model.Category
-import tech.eliseo.timetracker.domain.model.CategoryIcon
-import tech.eliseo.timetracker.domain.model.CurrentTracking
 import tech.eliseo.timetracker.domain.model.TrackedSlot
 import tech.eliseo.timetracker.domain.repository.TrackedSlotRepository
 import tech.eliseo.timetracker.ui.preview.FakePreviewData
 import java.time.LocalDate
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 class DefaultTrackedSlotRepository @Inject constructor(

@@ -1,7 +1,6 @@
 package tech.eliseo.timetracker.data.database.dto
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 
 @Entity(primaryKeys = ["startDate", "endDate"])

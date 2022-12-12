@@ -3,10 +3,8 @@ package tech.eliseo.timetracker.data.repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import tech.eliseo.timetracker.data.database.dao.CategoryDao
-import tech.eliseo.timetracker.data.database.dto.CategoryDB
 import tech.eliseo.timetracker.data.database.mapper.CategoryDBMapper
 import tech.eliseo.timetracker.domain.model.Category
-import tech.eliseo.timetracker.domain.model.CategoryIcon
 import tech.eliseo.timetracker.domain.repository.CategoryRepository
 import javax.inject.Inject
 

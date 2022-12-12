@@ -3,7 +3,6 @@ package tech.eliseo.timetracker.domain.usecase
 import kotlinx.coroutines.flow.Flow
 import tech.eliseo.timetracker.domain.model.CurrentTracking
 import tech.eliseo.timetracker.domain.repository.CurrentTrackingRepository
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 class GetCurrentTrackingUseCaseImpl @Inject constructor(

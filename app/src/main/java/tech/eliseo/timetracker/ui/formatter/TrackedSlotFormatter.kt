@@ -1,7 +1,6 @@
 package tech.eliseo.timetracker.ui.formatter
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ActivityContext
 import tech.eliseo.timetracker.R
 import tech.eliseo.timetracker.domain.model.TrackedSlot
 import java.time.format.DateTimeFormatter
