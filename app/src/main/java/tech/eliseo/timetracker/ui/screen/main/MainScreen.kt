@@ -47,6 +47,7 @@ import tech.eliseo.timetracker.domain.model.TrackedSlot
 import tech.eliseo.timetracker.ui.coponents.*
 import tech.eliseo.timetracker.ui.formatter.toContentRowHolder
 import tech.eliseo.timetracker.ui.preview.FakePreviewData
+import tech.eliseo.timetracker.ui.screen.add_category.AddCategoryDialog
 import tech.eliseo.timetracker.ui.theme.MyApplicationTheme
 import java.time.LocalDate
 import java.util.*

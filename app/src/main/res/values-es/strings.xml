@@ -7,4 +7,11 @@
     <string name="main_today_activity">Actividad de hoy</string>
     <string name="main_today_activity_empty">¡Empieza a registrar tu actividad!</string>
     <string name="analytics_tracked_slots_title">Actividad</string>
+    <string name="category_dialog_add_title">Añade una nueva categoría</string>
+    <string name="category_dialog_add_label">Categoría</string>
+    <string name="category_dialog_add_hint">Cocinar</string>
+    <string name="category_dialog_add_confirm">Confirmar</string>
+    <string name="category_dialog_add_cancel">Cancelar</string>
+    <string name="category_add_title">¡Crea tu propia categoría!</string>
+    <string name="category_add_button">Crear una categoría</string>
 </resources>

@@ -26,8 +26,8 @@ object CategoryFormatter {
             CategoryIcon.WORK -> Icons.Rounded.Work
             CategoryIcon.WORKOUT -> Icons.Rounded.FitnessCenter
             CategoryIcon.ENTERTAINMENT -> Icons.Rounded.SportsEsports
-            null -> Icons.Rounded.Star
-            else -> Icons.Rounded.Help
+            null -> Icons.Rounded.Help
+            else -> Icons.Rounded.Star
         }
     }
 }

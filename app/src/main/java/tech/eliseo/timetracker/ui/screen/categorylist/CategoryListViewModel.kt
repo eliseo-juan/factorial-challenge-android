@@ -19,24 +19,29 @@ package tech.eliseo.timetracker.ui.screen.categorylist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import tech.eliseo.timetracker.domain.model.Category
+import tech.eliseo.timetracker.domain.usecase.CreateCategoryUseCase
 import tech.eliseo.timetracker.domain.usecase.GetCategoryListUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoryListViewModel @Inject constructor(
     getCategoryListUseCase: GetCategoryListUseCase,
+    private val createCategoryUseCase: CreateCategoryUseCase,
 ) : ViewModel() {
 
-    val uiState: StateFlow<CategoryListUiState> = getCategoryListUseCase()
-        .map {
+    private val categoryDialogOpen = MutableStateFlow(false)
+
+    val uiState: StateFlow<CategoryListUiState> =
+        combine(
+            getCategoryListUseCase(),
+            categoryDialogOpen
+        ) { categories, isDialogOpen ->
             CategoryListUiState.Success(
-                list = it
+                list = categories,
+                addCategoryDialogOpen = isDialogOpen
             )
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CategoryListUiState.Loading)
@@ -44,12 +49,27 @@ class CategoryListViewModel @Inject constructor(
     fun onUiEvent(event: CategoryListUiEvent) {
         when (event) {
             CategoryListUiEvent.OnAddCategoryClicked -> onAddCategoryClicked()
+            CategoryListUiEvent.OnRequestCloseDialog -> onOnRequestCloseDialog()
+            is CategoryListUiEvent.OnConfirmNewCategoryClicked -> createCategory(event.name)
         }
     }
 
     private fun onAddCategoryClicked() {
         viewModelScope.launch {
-            //onToggleTrackerUseCase()
+            categoryDialogOpen.value = true
+        }
+    }
+
+    private fun onOnRequestCloseDialog() {
+        viewModelScope.launch {
+            categoryDialogOpen.value = false
+        }
+    }
+
+    private fun createCategory(name: String) {
+        viewModelScope.launch {
+            createCategoryUseCase(name)
+            categoryDialogOpen.value = false
         }
     }
 }
@@ -57,10 +77,13 @@ class CategoryListViewModel @Inject constructor(
 sealed class CategoryListUiState {
     object Loading : CategoryListUiState()
     data class Success(
-        val list: List<Category>
+        val list: List<Category>,
+        val addCategoryDialogOpen: Boolean = false,
     ) : CategoryListUiState()
 }
 
 sealed class CategoryListUiEvent {
     object OnAddCategoryClicked : CategoryListUiEvent()
+    object OnRequestCloseDialog : CategoryListUiEvent()
+    data class OnConfirmNewCategoryClicked(val name: String) : CategoryListUiEvent()
 }

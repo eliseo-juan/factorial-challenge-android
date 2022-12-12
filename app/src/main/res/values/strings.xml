@@ -22,4 +22,11 @@
     <string name="main_today_activity">Today\'s activity</string>
     <string name="main_today_activity_empty">Start tracking your activity!</string>
     <string name="analytics_tracked_slots_title">Activity</string>
+    <string name="category_dialog_add_title">Add a new category</string>
+    <string name="category_dialog_add_label">Category</string>
+    <string name="category_dialog_add_hint">Cooking</string>
+    <string name="category_dialog_add_confirm">Confirm</string>
+    <string name="category_dialog_add_cancel">Cancel</string>
+    <string name="category_add_title">Create your own category!</string>
+    <string name="category_add_button">Create a category</string>
 </resources>

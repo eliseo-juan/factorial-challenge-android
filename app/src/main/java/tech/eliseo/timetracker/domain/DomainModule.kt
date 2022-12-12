@@ -54,4 +54,9 @@ interface DomainModule {
     fun bindsGetTrackedDatesUseCase(
         useCase: GetTrackedDatesUseCaseImpl
     ): GetTrackedDatesUseCase
+    @Binds
+
+    fun bindsCreateCategoryUseCase(
+        useCase: CreateCategoryUseCaseImpl
+    ): CreateCategoryUseCase
 }
