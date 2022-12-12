@@ -10,6 +10,7 @@ interface TrackedSlotRepository {
 
     fun getTrackedSlotsByDate(date: LocalDate): Flow<List<TrackedSlot>>
     fun getTodayTrackedSlots(): Flow<List<TrackedSlot>>
+    fun getTrackedDates(): Flow<List<LocalDate>>
     suspend fun assignCategory(trackedSlot: TrackedSlot, category: Category)
     suspend fun add(trackedSlot: TrackedSlot)
 

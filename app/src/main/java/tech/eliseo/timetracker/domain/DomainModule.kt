@@ -39,4 +39,19 @@ interface DomainModule {
     fun bindsAssignCategoryUseCase(
         useCase: AssignCategoryUseCaseImpl
     ): AssignCategoryUseCase
+
+    @Binds
+    fun bindsGetTrackedSlotListByDateUseCase(
+        useCase: GetTrackedSlotListByDateUseCaseImpl
+    ): GetTrackedSlotListByDateUseCase
+
+    @Binds
+    fun bindsGetCategoryUsageByDateUseCase(
+        useCase: GetCategoryUsageByDateUseCaseImpl
+    ): GetCategoryUsageByDateUseCase
+
+    @Binds
+    fun bindsGetTrackedDatesUseCase(
+        useCase: GetTrackedDatesUseCaseImpl
+    ): GetTrackedDatesUseCase
 }

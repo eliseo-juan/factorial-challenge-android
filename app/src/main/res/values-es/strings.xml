@@ -6,4 +6,5 @@
     <string name="tracked_slot_assign_a_category">Asigna una categoría</string>
     <string name="main_today_activity">Actividad de hoy</string>
     <string name="main_today_activity_empty">¡Empieza a registrar tu actividad!</string>
+    <string name="analytics_tracked_slots_title">Actividad</string>
 </resources>

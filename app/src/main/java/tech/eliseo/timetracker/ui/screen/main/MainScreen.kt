@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -43,10 +44,8 @@ import tech.eliseo.timetracker.R
 import tech.eliseo.timetracker.domain.model.Category
 import tech.eliseo.timetracker.domain.model.CurrentTracking
 import tech.eliseo.timetracker.domain.model.TrackedSlot
-import tech.eliseo.timetracker.ui.coponents.MainButton
-import tech.eliseo.timetracker.ui.coponents.MainButtonState
-import tech.eliseo.timetracker.ui.coponents.TrackedSlotView
-import tech.eliseo.timetracker.ui.coponents.TrackedSlotWithoutCategoryView
+import tech.eliseo.timetracker.ui.coponents.*
+import tech.eliseo.timetracker.ui.formatter.toContentRowHolder
 import tech.eliseo.timetracker.ui.preview.FakePreviewData
 import tech.eliseo.timetracker.ui.theme.MyApplicationTheme
 import java.time.LocalDate
@@ -82,7 +81,7 @@ fun MainScreen(
                 navController.navigate("category_list")
             },
             onHistoryButtonClicked = {
-                navController.navigate("category_list")
+                navController.navigate("analytics")
             },
         )
     }
@@ -168,20 +167,20 @@ internal fun MainScreen(
                     )
                 }
             } else {
-                trackedSlots.forEach { trackedSlots ->
-                    if (trackedSlots.category == null) {
+                trackedSlots.forEach { trackedSlot ->
+                    if (trackedSlot.category == null) {
                         TrackedSlotWithoutCategoryView(
                             modifier = Modifier.padding(vertical = 4.dp),
-                            trackedSlot = trackedSlots,
+                            trackedSlot = trackedSlot,
                             categoryList = categoryList,
                             onCategorySelected = { category ->
-                                onCategoryAssigned(trackedSlots, category)
+                                onCategoryAssigned(trackedSlot, category)
                             }
                         )
                     } else {
-                        TrackedSlotView(
+                        CardContentRow(
                             modifier = Modifier.padding(vertical = 4.dp),
-                            trackedSlot = trackedSlots
+                            holder = trackedSlot.toContentRowHolder(LocalContext.current)
                         )
                     }
                 }

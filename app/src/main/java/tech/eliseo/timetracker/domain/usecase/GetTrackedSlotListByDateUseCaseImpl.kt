@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetTrackedSlotListByDateUseCaseImpl @Inject constructor(
     private val repository: TrackedSlotRepository
-) : GetTodayTrackedSlotListUseCase {
+) : GetTrackedSlotListByDateUseCase {
 
     override fun invoke(date: LocalDate): Flow<List<TrackedSlot>> = repository.getTrackedSlotsByDate(date)
 }

@@ -47,9 +47,12 @@ class DefaultTrackedSlotRepository @Inject constructor(
             transform = getTrackedSlotCategoryMergeAndMapper()
         )
 
-    override fun getTrackedSlotsByDate(date: LocalDate): Flow<List<TrackedSlot>> {
-        return trackedSlots
-    }
+    override fun getTrackedSlotsByDate(date: LocalDate): Flow<List<TrackedSlot>> =
+        combine(
+            trackedSlotDao.getTrackedSlotsByDate(date),
+            categoryDao.getCategories(),
+            transform = getTrackedSlotCategoryMergeAndMapper()
+        )
 
     override fun getTodayTrackedSlots(): Flow<List<TrackedSlot>> =
         combine(
@@ -57,6 +60,10 @@ class DefaultTrackedSlotRepository @Inject constructor(
             categoryDao.getCategories(),
             transform = getTrackedSlotCategoryMergeAndMapper()
         )
+
+    override fun getTrackedDates(): Flow<List<LocalDate>> {
+        return trackedSlotDao.getTrackedDates()
+    }
 
     override suspend fun assignCategory(
         trackedSlot: TrackedSlot,

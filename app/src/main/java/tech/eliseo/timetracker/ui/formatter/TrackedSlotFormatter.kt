@@ -27,6 +27,10 @@ object TrackedSlotFormatter {
     fun getDuration(context: Context, trackedSlot: TrackedSlot): String {
         var seconds: Int =
             ChronoUnit.SECONDS.between(trackedSlot.startDate, trackedSlot.endDate).toInt()
+        return getDuration(context, seconds)
+    }
+    fun getDuration(context: Context, totalSeconds: Int): String {
+        var seconds = totalSeconds
         val hours = seconds / HOUR_LENGTH
         seconds -= hours * HOUR_LENGTH
         val minutes = seconds / MINUTE_LENGTH

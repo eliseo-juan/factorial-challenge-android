@@ -19,11 +19,16 @@ package tech.eliseo.timetracker.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import tech.eliseo.timetracker.ui.screen.analytics.AnalyticsScreen
 import tech.eliseo.timetracker.ui.screen.categorylist.CategoryListScreen
 import tech.eliseo.timetracker.ui.screen.main.MainScreen
 import tech.eliseo.timetracker.ui.theme.MyApplicationTheme
@@ -37,22 +42,33 @@ class MainActivity : ComponentActivity() {
 
             val navController = rememberNavController()
             MyApplicationTheme {
-                NavHost(
-                    navController = navController,
-                    startDestination = "main"
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
                 ) {
-                    composable(route = "main") {
-                        MainScreen(navController = navController, viewModel = hiltViewModel())
-                    }
+                    NavHost(
+                        navController = navController,
+                        startDestination = "main"
+                    ) {
+                        composable(route = "main") {
+                            MainScreen(navController = navController, viewModel = hiltViewModel())
+                        }
 
-                    composable("category_list") {
-                        CategoryListScreen(
-                            navController = navController,
-                            viewModel = hiltViewModel(it)
-                        )
-                    }
+                        composable("category_list") {
+                            CategoryListScreen(
+                                navController = navController,
+                                viewModel = hiltViewModel(it)
+                            )
+                        }
 
-                    /*dialog(
+                        composable("analytics") {
+                            AnalyticsScreen(
+                                navController = navController,
+                                viewModel = hiltViewModel(it)
+                            )
+                        }
+
+                        /*dialog(
                         route = ProductDetailNavigation.route,
                         arguments = ProductDetailNavigation.arguments,
                     ) {
@@ -62,6 +78,7 @@ class MainActivity : ComponentActivity() {
                     }*/
 
 
+                    }
                 }
             }
         }

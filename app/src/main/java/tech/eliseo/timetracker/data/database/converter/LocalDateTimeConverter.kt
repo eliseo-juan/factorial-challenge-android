@@ -1,22 +1,21 @@
 package tech.eliseo.timetracker.data.database.converter
 
 import androidx.room.TypeConverter
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class LocalDateConverter {
-    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
+class LocalDateTimeConverter {
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
     @TypeConverter
-    fun toLocalDate(value: String?): LocalDate? {
+    fun toLocalDateTime(value: String?): LocalDateTime? {
         return value?.let {
-            return formatter.parse(value, LocalDate::from)
+            return formatter.parse(value, LocalDateTime::from)
         }
     }
 
     @TypeConverter
-    fun fromLocalDate(date: LocalDate?): String? {
+    fun fromLocalDateTime(date: LocalDateTime?): String? {
         return date?.format(formatter)
     }
 }

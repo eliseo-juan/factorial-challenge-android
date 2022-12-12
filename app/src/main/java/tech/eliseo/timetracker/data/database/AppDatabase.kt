@@ -19,14 +19,15 @@ package tech.eliseo.timetracker.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import tech.eliseo.timetracker.data.database.converter.DateConverter
+import tech.eliseo.timetracker.data.database.converter.LocalDateConverter
+import tech.eliseo.timetracker.data.database.converter.LocalDateTimeConverter
 import tech.eliseo.timetracker.data.database.dao.CategoryDao
 import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
 import tech.eliseo.timetracker.data.database.dto.CategoryDB
 import tech.eliseo.timetracker.data.database.dto.TrackedSlotDB
 
 @Database(entities = [TrackedSlotDB::class, CategoryDB::class], version = 2)
-@TypeConverters(DateConverter::class)
+@TypeConverters(LocalDateTimeConverter::class, LocalDateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun trackedSlotDao(): TrackedSlotDao
     abstract fun categoryDao(): CategoryDao

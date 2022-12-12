@@ -1,4 +1,4 @@
-package tech.eliseo.timetracker.ui.coponents
+package tech.eliseo.timetracker.ui.screen.main
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -7,12 +7,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tech.eliseo.timetracker.R
 import tech.eliseo.timetracker.domain.model.Category
 import tech.eliseo.timetracker.domain.model.TrackedSlot
+import tech.eliseo.timetracker.ui.coponents.CardContentRow
+import tech.eliseo.timetracker.ui.coponents.ContentIcon
+import tech.eliseo.timetracker.ui.formatter.toContentIconHolder
+import tech.eliseo.timetracker.ui.formatter.toContentRowHolder
 import tech.eliseo.timetracker.ui.theme.MyApplicationTheme
 import java.time.LocalDateTime
 
@@ -30,10 +35,10 @@ fun TrackedSlotWithoutCategoryView(
         onClick = onCardClick,
         colors = CardDefaults.cardColors(),
     ) {
-        TrackedSlotView(
+        CardContentRow(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
-            trackedSlot = trackedSlot,
+            holder = trackedSlot.toContentRowHolder(LocalContext.current),
             onCardClick = onCardClick
         )
 
@@ -50,11 +55,11 @@ fun TrackedSlotWithoutCategoryView(
                 .padding(top = 0.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)
         ) {
             categoryList.forEach {
-                CategoryIconView(
+                ContentIcon(
                     modifier = Modifier
                         .padding(8.dp)
                         .clickable { onCategorySelected(it) },
-                    category = it
+                    holder = it.toContentIconHolder()
                 )
             }
         }
@@ -66,12 +71,13 @@ fun TrackedSlotWithoutCategoryView(
 private fun DefaultPreview() {
     MyApplicationTheme {
         Box(Modifier.padding(0.dp)) {
-            TrackedSlotView(
+            TrackedSlotWithoutCategoryView(
                 trackedSlot = TrackedSlot(
                     startDate = LocalDateTime.now().minusHours(2),
                     endDate = LocalDateTime.now(),
                     category = null
-                )
+                ),
+                categoryList = emptyList()
             )
         }
     }
