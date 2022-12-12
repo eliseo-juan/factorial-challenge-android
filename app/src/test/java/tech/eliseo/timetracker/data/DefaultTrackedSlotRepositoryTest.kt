@@ -23,14 +23,15 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import tech.eliseo.timetracker.data.local.database.TrackedSlot
-import tech.eliseo.timetracker.data.local.database.TrackedSlotDao
+import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
+
 import tech.eliseo.timetracker.data.repository.DefaultTrackedSlotRepository
+import tech.eliseo.timetracker.domain.model.TrackedSlot
 
 /**
  * Unit tests for [DefaultTrackedSlotRepository].
  */
-@OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
+/*@OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
 class DefaultTrackedSlotRepositoryTest {
 
     @Test
@@ -55,4 +56,4 @@ private class FakeTrackedSlotDao : TrackedSlotDao {
     override suspend fun insertTrackedSlot(item: TrackedSlot) {
         data.add(0, item)
     }
-}
+}*/

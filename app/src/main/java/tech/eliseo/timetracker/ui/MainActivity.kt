@@ -45,17 +45,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            val systemUiController = rememberSystemUiController()
-            val useDarkIcons = !isSystemInDarkTheme()
-
-            DisposableEffect(systemUiController, useDarkIcons) {
-                systemUiController.setSystemBarsColor(
-                    color = Color.Transparent,
-                    darkIcons = useDarkIcons
-                )
-                onDispose {}
-            }
-
             val navController = rememberNavController()
             MyApplicationTheme {
                 NavHost(

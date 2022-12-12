@@ -8,12 +8,13 @@ import java.time.LocalDate
 object FakePreviewData {
 
     fun getDayListOfTrackedSlot(date: LocalDate): List<TrackedSlot> {
-        return (0..(0..4).random()).map {
-            val startDate = date.atTime(8 * it + (0..6).random(), (0..59).random())
+        val categories = getCategories()
+        return (0..(3..10).random()).map {
+            val startDate = date.atTime((0..23).random(), (0..59).random())
             TrackedSlot(
                 startDate = startDate,
                 endDate = startDate.plusMinutes((20..90).random().toLong()),
-                category = null
+                category = categories.random()
             )
         }
     }
@@ -27,9 +28,9 @@ object FakePreviewData {
 
     fun getCategories() : List<Category> {
         return listOf(
-            Category("Trabajo", 0xFF00f5d4, CategoryIcon.WORK),
-            Category("Deporte", 0xFF00bbf9, CategoryIcon.WORKOUT),
-            Category("Entretenimiento", 0xFFf15bb5, CategoryIcon.ENTERTAINMENT),
+            Category(id = 1, title ="Trabajo", color = 0xFF00f5d4, icon = CategoryIcon.WORK),
+            Category(id = 2, title ="Deporte", color = 0xFF00bbf9, icon = CategoryIcon.WORKOUT),
+            Category(id = 3, title ="Entretenimiento", color = 0xFFf15bb5, icon = CategoryIcon.ENTERTAINMENT),
         )
     }
 }

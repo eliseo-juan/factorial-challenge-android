@@ -17,33 +17,64 @@
 package tech.eliseo.timetracker.data.repository
 
 import android.util.Log
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.lastOrNull
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
+import tech.eliseo.timetracker.data.database.dao.CategoryDao
 import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
+import tech.eliseo.timetracker.data.database.dto.CategoryDB
+import tech.eliseo.timetracker.data.database.dto.TrackedSlotDB
+import tech.eliseo.timetracker.data.database.mapper.CategoryDBMapper
 import tech.eliseo.timetracker.data.database.mapper.TrackedSlotDBMapper
+import tech.eliseo.timetracker.domain.model.Category
+import tech.eliseo.timetracker.domain.model.CategoryIcon
 import tech.eliseo.timetracker.domain.model.CurrentTracking
 import tech.eliseo.timetracker.domain.model.TrackedSlot
 import tech.eliseo.timetracker.domain.repository.TrackedSlotRepository
+import tech.eliseo.timetracker.ui.preview.FakePreviewData
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
 
 class DefaultTrackedSlotRepository @Inject constructor(
-    private val trackedSlotDao: TrackedSlotDao
-) : TrackedSlotRepository, TrackedSlotDBMapper {
+    private val trackedSlotDao: TrackedSlotDao,
+    private val categoryDao: CategoryDao
+) : TrackedSlotRepository, TrackedSlotDBMapper, CategoryDBMapper {
+
+    override suspend fun populate() {
+        trackedSlotDao.insertTrackedSlotList(FakePreviewData.getListOfTrackedSlot().map { it.toTrackedSlotDB() })
+    }
 
     override val trackedSlots: Flow<List<TrackedSlot>> =
-        trackedSlotDao.getTrackedSlots()
-            .map { it.map { item -> item.toTrackedSlot() } }
+        combine(
+            trackedSlotDao.getTrackedSlots(),
+            categoryDao.getCategories(),
+            transform = getTrackedSlotCategoryMergeAndMapper()
+        )
 
-    override fun getTrackedSlotsByDate(date: LocalDate) : Flow<List<TrackedSlot>> {
-        return trackedSlotDao.getTrackedSlotsByDate()
-            .map { it.map { item -> item.toTrackedSlot() } }
+    override fun getTrackedSlotsByDate(date: LocalDate): Flow<List<TrackedSlot>> {
+        return trackedSlots
+    }
+
+    override fun getTodayTrackedSlots(): Flow<List<TrackedSlot>> =
+        combine(
+            trackedSlotDao.getTodayTrackedSlots(),
+            categoryDao.getCategories(),
+            transform = getTrackedSlotCategoryMergeAndMapper()
+        )
+
+    override suspend fun assignCategory(
+        trackedSlot: TrackedSlot,
+        category: Category
+    ) {
+        trackedSlotDao.updateTrackedSlot(trackedSlot.copy(category = category).toTrackedSlotDB())
     }
 
     override suspend fun add(trackedSlot: TrackedSlot) {
         trackedSlotDao.insertTrackedSlot(trackedSlot.toTrackedSlotDB())
     }
+
+    private fun getTrackedSlotCategoryMergeAndMapper(): (List<TrackedSlotDB>, List<CategoryDB>) -> List<TrackedSlot> =
+        { trackedSlots, categoryDBList ->
+            val categoryList = categoryDBList.map { it.toCategory() }
+            trackedSlots.map { item -> item.toTrackedSlot(categoryList) }
+        }
 }

@@ -1,18 +1,11 @@
 package tech.eliseo.timetracker.ui.coponents
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tech.eliseo.timetracker.domain.model.TrackedSlot
@@ -31,50 +24,44 @@ fun TrackedSlotView(
     Card(
         modifier = modifier,
         onClick = onCardClick,
+        colors = CardDefaults.elevatedCardColors(),
+        elevation = CardDefaults.elevatedCardElevation()
     ) {
         Row(
             modifier = Modifier
-                .padding(4.dp)
+                .padding(8.dp)
                 .fillMaxWidth(1f)
                 .wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             CategoryIconView(
-                modifier = Modifier.padding(4.dp)
+                modifier = Modifier.padding(8.dp),
+                category = trackedSlot.category
             )
             Column(
                 modifier = Modifier
-                    .padding(4.dp)
+                    .padding(8.dp)
                     .weight(1f, true),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = CategoryFormatter.getName(null),
+                    text = CategoryFormatter.getName(trackedSlot.category),
                     maxLines = 1,
-                    style = MaterialTheme.typography.labelLarge
+                    style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
-                    text = TrackedSlotFormatter.getDuration(trackedSlot),
+                    text = TrackedSlotFormatter.getTimePeriod(trackedSlot),
                     maxLines = 1,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.labelMedium
                 )
             }
-            Column(
+            Text(
                 modifier = Modifier
-                    .padding(4.dp)
+                    .padding(8.dp)
                     .wrapContentWidth(),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.End
-            ) {
-                Text(
-                    text = TrackedSlotFormatter.getStartTime(trackedSlot),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = TrackedSlotFormatter.getEndTime(trackedSlot),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+                text = TrackedSlotFormatter.getDuration(LocalContext.current, trackedSlot),
+                style = MaterialTheme.typography.titleMedium
+            )
         }
     }
 }
@@ -88,7 +75,7 @@ private fun DefaultPreview() {
                 trackedSlot = TrackedSlot(
                     startDate = LocalDateTime.now().minusHours(2),
                     endDate = LocalDateTime.now(),
-                    category = "Prueba"
+                    category = null
                 )
             )
         }

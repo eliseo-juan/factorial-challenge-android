@@ -33,8 +33,8 @@ fun CategoryRow(
     Card(
         modifier = modifier
             .fillMaxWidth(),
-
-        ) {
+        shape = CardDefaults.elevatedShape,
+    ) {
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically

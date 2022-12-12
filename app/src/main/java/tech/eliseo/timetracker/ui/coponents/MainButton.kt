@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -24,16 +22,17 @@ fun MainButton(
 ) {
 
     val radius = when (buttonState) {
-        MainButtonState.Idle -> 160.dp
-        MainButtonState.Started -> 16.dp
+        MainButtonState.Idle -> 360.dp
+        MainButtonState.Started -> 56.dp
     }
     val cornerRadius = animateDpAsState(targetValue = radius)
 
     Button(
         modifier = modifier
-            .aspectRatio(1f)
-            .clip(RoundedCornerShape(cornerRadius.value)),
-        onClick = onClick) {
+            .aspectRatio(1f),
+        shape = RoundedCornerShape(cornerRadius.value),
+        onClick = onClick
+    ) {
         Text(
             text = when (buttonState) {
                 MainButtonState.Idle -> "Inicio"

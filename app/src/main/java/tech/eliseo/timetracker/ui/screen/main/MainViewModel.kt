@@ -23,42 +23,56 @@ import androidx.navigation.NavHostController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import tech.eliseo.timetracker.domain.model.Category
 import tech.eliseo.timetracker.domain.model.CurrentTracking
 import tech.eliseo.timetracker.domain.model.TrackedSlot
-import tech.eliseo.timetracker.domain.usecase.GetCurrentTrackingUseCase
-import tech.eliseo.timetracker.domain.usecase.GetTodayTrackedSlotListUseCase
-import tech.eliseo.timetracker.domain.usecase.GetTrackedSlotListUseCase
-import tech.eliseo.timetracker.domain.usecase.OnToggleTrackerUseCase
+import tech.eliseo.timetracker.domain.repository.CategoryRepository
+import tech.eliseo.timetracker.domain.repository.TrackedSlotRepository
+import tech.eliseo.timetracker.domain.usecase.*
 import tech.eliseo.timetracker.ui.screen.main.TrackedSlotUiState.Loading
 import tech.eliseo.timetracker.ui.screen.main.TrackedSlotUiState.Success
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getTrackedSlotListUseCase: GetTrackedSlotListUseCase,
     getTodayTrackedSlotListUseCase: GetTodayTrackedSlotListUseCase,
     getCurrentTrackingUseCase: GetCurrentTrackingUseCase,
+    getCategoryListUseCase: GetCategoryListUseCase,
+    private val assignCategoryUseCase: AssignCategoryUseCase,
     private val onToggleTrackerUseCase: OnToggleTrackerUseCase,
+    private val trackedSlotRepository: TrackedSlotRepository,
 ) : ViewModel() {
 
-    val uiState: StateFlow<TrackedSlotUiState> = getTrackedSlotListUseCase()
-        .combine(getCurrentTrackingUseCase()) { trackedSlots, currentTracking ->
-            Success(
-                trackStartDate = currentTracking,
-                todayTrackedSlot = trackedSlots
-            )
-        }
+    val uiState: StateFlow<TrackedSlotUiState> = combine(
+        getTodayTrackedSlotListUseCase(),
+        getCurrentTrackingUseCase(),
+        getCategoryListUseCase()
+    ) { trackedSlots, currentTracking, categoryList ->
+        Success(
+            trackStartDate = currentTracking,
+            todayTrackedSlot = trackedSlots,
+            categoryList = categoryList
+        )
+    }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
     fun onUiEvent(event: TrackedSlotUiEvent) {
         when (event) {
             TrackedSlotUiEvent.OnTrackedClicked -> onTrackedClicked()
+            is TrackedSlotUiEvent.OnCategoryAssigned -> onCategoryAssigned(event.trackedSlot, event.category)
         }
     }
 
     private fun onTrackedClicked() {
         viewModelScope.launch {
-            onToggleTrackerUseCase()
+            onToggleTrackerUseCase((uiState.value as? Success)?.trackStartDate)
+            //trackedSlotRepository.populate()
+        }
+    }
+
+    private fun onCategoryAssigned(trackedSlot: TrackedSlot, category: Category) {
+        viewModelScope.launch {
+            assignCategoryUseCase(trackedSlot, category)
         }
     }
 }
@@ -67,10 +81,13 @@ sealed class TrackedSlotUiState {
     object Loading : TrackedSlotUiState()
     data class Success(
         val trackStartDate: CurrentTracking,
-        val todayTrackedSlot: List<TrackedSlot>
+        val todayTrackedSlot: List<TrackedSlot>,
+        val categoryList: List<Category>,
     ) : TrackedSlotUiState()
 }
 
 sealed class TrackedSlotUiEvent {
     object OnTrackedClicked : TrackedSlotUiEvent()
+    data class OnCategoryAssigned(val trackedSlot: TrackedSlot, val category: Category) :
+        TrackedSlotUiEvent()
 }

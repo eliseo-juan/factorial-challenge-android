@@ -17,16 +17,21 @@
 package tech.eliseo.timetracker.ui.screen.main
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DonutLarge
 import androidx.compose.material.icons.filled.LocalOffer
 import androidx.compose.material3.*
+import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,11 +40,13 @@ import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import tech.eliseo.timetracker.R
+import tech.eliseo.timetracker.domain.model.Category
 import tech.eliseo.timetracker.domain.model.CurrentTracking
 import tech.eliseo.timetracker.domain.model.TrackedSlot
 import tech.eliseo.timetracker.ui.coponents.MainButton
 import tech.eliseo.timetracker.ui.coponents.MainButtonState
 import tech.eliseo.timetracker.ui.coponents.TrackedSlotView
+import tech.eliseo.timetracker.ui.coponents.TrackedSlotWithoutCategoryView
 import tech.eliseo.timetracker.ui.preview.FakePreviewData
 import tech.eliseo.timetracker.ui.theme.MyApplicationTheme
 import java.time.LocalDate
@@ -64,9 +71,13 @@ fun MainScreen(
     if (state is TrackedSlotUiState.Success) {
         MainScreen(
             modifier = modifier,
-            todayTrackedSlot = (state as TrackedSlotUiState.Success).todayTrackedSlot,
+            trackedSlots = (state as TrackedSlotUiState.Success).todayTrackedSlot,
             currentTracking = (state as TrackedSlotUiState.Success).trackStartDate,
+            categoryList = (state as TrackedSlotUiState.Success).categoryList,
             onTapTracker = { viewModel.onUiEvent(TrackedSlotUiEvent.OnTrackedClicked) },
+            onCategoryAssigned = { trackedSlot, category ->
+                viewModel.onUiEvent(TrackedSlotUiEvent.OnCategoryAssigned(trackedSlot, category))
+            },
             onCategoryButtonClicked = {
                 navController.navigate("category_list")
             },
@@ -81,12 +92,17 @@ fun MainScreen(
 @Composable
 internal fun MainScreen(
     modifier: Modifier = Modifier,
-    todayTrackedSlot: List<TrackedSlot> = emptyList(),
     currentTracking: CurrentTracking = CurrentTracking.Stopped,
+    trackedSlots: List<TrackedSlot> = emptyList(),
+    categoryList: List<Category> = emptyList(),
     onTapTracker: () -> Unit = {},
+    onCategoryAssigned: (TrackedSlot, Category) -> Unit = { _, _ -> },
     onCategoryButtonClicked: () -> Unit = {},
     onHistoryButtonClicked: () -> Unit = {},
 ) {
+
+    val scroll = rememberScrollState()
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -98,7 +114,7 @@ internal fun MainScreen(
                         overflow = TextOverflow.Ellipsis
                     )
                 },
-
+                scrollBehavior = enterAlwaysScrollBehavior(),
                 actions = {
                     IconButton(onClick = onCategoryButtonClicked) {
                         Icon(
@@ -119,10 +135,11 @@ internal fun MainScreen(
         Column(
             modifier = Modifier
                 .padding(it)
+                .verticalScroll(scroll)
                 .padding(16.dp)
         ) {
             MainButton(
-                modifier = Modifier.padding(32.dp),
+                modifier = Modifier.padding(64.dp),
                 buttonState = when (currentTracking) {
                     is CurrentTracking.Started -> MainButtonState.Started
                     CurrentTracking.Stopped -> MainButtonState.Idle
@@ -131,24 +148,42 @@ internal fun MainScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Última actividad",
+                text = stringResource(id = R.string.main_today_activity),
                 style = MaterialTheme.typography.labelMedium
             )
             Spacer(modifier = Modifier.height(8.dp))
-            if (todayTrackedSlot.isEmpty()) {
+            if (trackedSlots.isEmpty()) {
                 Card(
                     Modifier
                         .padding(vertical = 4.dp)
-                        .height(56.dp)
                 ) {
-                    Text(text = "Aún no has registrado ninguna actividad")
+                    Text(
+                        modifier = Modifier
+                            .padding(32.dp)
+                            .fillMaxWidth()
+                            .align(Alignment.CenterHorizontally),
+                        text = stringResource(id = R.string.main_today_activity_empty),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 }
             } else {
-                todayTrackedSlot.forEach {
-                    TrackedSlotView(
-                        modifier = Modifier.padding(vertical = 4.dp),
-                        trackedSlot = it
-                    )
+                trackedSlots.forEach { trackedSlots ->
+                    if (trackedSlots.category == null) {
+                        TrackedSlotWithoutCategoryView(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            trackedSlot = trackedSlots,
+                            categoryList = categoryList,
+                            onCategorySelected = { category ->
+                                onCategoryAssigned(trackedSlots, category)
+                            }
+                        )
+                    } else {
+                        TrackedSlotView(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            trackedSlot = trackedSlots
+                        )
+                    }
                 }
             }
         }
@@ -162,7 +197,7 @@ internal fun MainScreen(
 private fun DefaultPreview() {
     MyApplicationTheme {
         MainScreen(
-            todayTrackedSlot = FakePreviewData.getDayListOfTrackedSlot(LocalDate.now()),
+            trackedSlots = FakePreviewData.getDayListOfTrackedSlot(LocalDate.now()),
         )
     }
 }

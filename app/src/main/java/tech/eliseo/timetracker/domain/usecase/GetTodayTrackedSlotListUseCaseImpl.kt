@@ -10,5 +10,5 @@ class GetTodayTrackedSlotListUseCaseImpl @Inject constructor(
     private val repository: TrackedSlotRepository
 ) : GetTodayTrackedSlotListUseCase {
 
-    override fun invoke(): Flow<List<TrackedSlot>> = repository.getTrackedSlotsByDate(date = LocalDate.now())
+    override fun invoke(): Flow<List<TrackedSlot>> = repository.getTodayTrackedSlots()
 }

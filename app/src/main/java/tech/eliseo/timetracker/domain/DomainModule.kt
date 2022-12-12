@@ -34,4 +34,9 @@ interface DomainModule {
     fun bindsGetCategoryListUseCase(
         useCase: GetCategoryListUseCaseImpl
     ): GetCategoryListUseCase
+
+    @Binds
+    fun bindsAssignCategoryUseCase(
+        useCase: AssignCategoryUseCaseImpl
+    ): AssignCategoryUseCase
 }
