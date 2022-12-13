@@ -18,12 +18,13 @@ package tech.eliseo.timetracker.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import tech.eliseo.timetracker.data.database.dao.CategoryDao
-import tech.eliseo.timetracker.data.database.dao.TrackedSlotDao
-import tech.eliseo.timetracker.data.database.dto.CategoryDB
-import tech.eliseo.timetracker.data.database.dto.TrackedSlotDB
-import tech.eliseo.timetracker.data.database.mapper.CategoryDBMapper
-import tech.eliseo.timetracker.data.database.mapper.TrackedSlotDBMapper
+import tech.eliseo.timetracker.data.local.database.dao.CategoryDao
+import tech.eliseo.timetracker.data.local.database.dao.TrackedSlotDao
+import tech.eliseo.timetracker.data.local.database.entities.CategoryEntity
+import tech.eliseo.timetracker.data.local.database.entities.TrackedSlotEntity
+import tech.eliseo.timetracker.data.local.database.mapper.CategoryEntityMapper
+import tech.eliseo.timetracker.data.local.database.mapper.TrackedSlotEntityMapper
+import tech.eliseo.timetracker.data.network.datasource.NetworkTrackedSlotDatasource
 import tech.eliseo.timetracker.domain.model.Category
 import tech.eliseo.timetracker.domain.model.TrackedSlot
 import tech.eliseo.timetracker.domain.repository.TrackedSlotRepository
@@ -33,11 +34,14 @@ import javax.inject.Inject
 
 class DefaultTrackedSlotRepository @Inject constructor(
     private val trackedSlotDao: TrackedSlotDao,
+    private val datasource: NetworkTrackedSlotDatasource,
     private val categoryDao: CategoryDao
-) : TrackedSlotRepository, TrackedSlotDBMapper, CategoryDBMapper {
+) : TrackedSlotRepository, TrackedSlotEntityMapper, CategoryEntityMapper {
 
     override suspend fun populate() {
-        trackedSlotDao.insertTrackedSlotList(FakePreviewData.getListOfTrackedSlot().map { it.toTrackedSlotDB() })
+        trackedSlotDao.insertTrackedSlotList(
+            FakePreviewData.getListOfTrackedSlot().map { it.toTrackedSlotEntity() }
+        )
     }
 
     override val trackedSlots: Flow<List<TrackedSlot>> =
@@ -69,14 +73,17 @@ class DefaultTrackedSlotRepository @Inject constructor(
         trackedSlot: TrackedSlot,
         category: Category
     ) {
-        trackedSlotDao.updateTrackedSlot(trackedSlot.copy(category = category).toTrackedSlotDB())
+        trackedSlotDao.updateTrackedSlot(
+            trackedSlot.copy(category = category).toTrackedSlotEntity()
+        )
     }
 
     override suspend fun add(trackedSlot: TrackedSlot) {
-        trackedSlotDao.insertTrackedSlot(trackedSlot.toTrackedSlotDB())
+        trackedSlotDao.insertTrackedSlot(trackedSlot.toTrackedSlotEntity())
+        datasource.saveTrackedSlot(trackedSlot)
     }
 
-    private fun getTrackedSlotCategoryMergeAndMapper(): (List<TrackedSlotDB>, List<CategoryDB>) -> List<TrackedSlot> =
+    private fun getTrackedSlotCategoryMergeAndMapper(): (List<TrackedSlotEntity>, List<CategoryEntity>) -> List<TrackedSlot> =
         { trackedSlots, categoryDBList ->
             val categoryList = categoryDBList.map { it.toCategory() }
             trackedSlots.map { item -> item.toTrackedSlot(categoryList) }

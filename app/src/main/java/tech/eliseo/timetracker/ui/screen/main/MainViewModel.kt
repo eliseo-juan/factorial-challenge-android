@@ -57,23 +57,24 @@ class MainViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
     fun onUiEvent(event: TrackedSlotUiEvent) {
-        when (event) {
-            TrackedSlotUiEvent.OnTrackedClicked -> onTrackedClicked()
-            is TrackedSlotUiEvent.OnCategoryAssigned -> onCategoryAssigned(event.trackedSlot, event.category)
+        viewModelScope.launch {
+            when (event) {
+                TrackedSlotUiEvent.OnTrackedClicked -> onTrackedClicked()
+                is TrackedSlotUiEvent.OnCategoryAssigned -> onCategoryAssigned(
+                    event.trackedSlot,
+                    event.category
+                )
+                TrackedSlotUiEvent.OnPopulateDatabase -> trackedSlotRepository.populate()
+            }
         }
     }
 
-    private fun onTrackedClicked() {
-        viewModelScope.launch {
-            onToggleTrackerUseCase((uiState.value as? Success)?.trackStartDate)
-            //trackedSlotRepository.populate()
-        }
+    private suspend fun onTrackedClicked() {
+        onToggleTrackerUseCase((uiState.value as? Success)?.trackStartDate)
     }
 
-    private fun onCategoryAssigned(trackedSlot: TrackedSlot, category: Category) {
-        viewModelScope.launch {
-            assignCategoryUseCase(trackedSlot, category)
-        }
+    private suspend fun onCategoryAssigned(trackedSlot: TrackedSlot, category: Category) {
+        assignCategoryUseCase(trackedSlot, category)
     }
 }
 
@@ -90,4 +91,6 @@ sealed class TrackedSlotUiEvent {
     object OnTrackedClicked : TrackedSlotUiEvent()
     data class OnCategoryAssigned(val trackedSlot: TrackedSlot, val category: Category) :
         TrackedSlotUiEvent()
+
+    object OnPopulateDatabase : TrackedSlotUiEvent()
 }

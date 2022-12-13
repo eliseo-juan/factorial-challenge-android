@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -68,13 +68,15 @@ internal fun AnalyticsScreen(
 ) {
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         topBar = {
-            Column() {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 TopAppBar(
                     title = {
                         Text(
-                            "Análisis",
+                            stringResource(id = R.string.statistics_title),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -82,13 +84,19 @@ internal fun AnalyticsScreen(
                     navigationIcon = {
                         IconButton(onClick = onBackButtonClicked) {
                             Icon(
-                                imageVector = Icons.Filled.ArrowBack,
-                                contentDescription = "Localized description"
+                                imageVector = Icons.Rounded.ArrowBack,
+                                contentDescription = null
                             )
                         }
                     },
                 )
-                ScrollableTabRow(selectedTabIndex = dateList.indexOf(selectedDate)) {
+                ScrollableTabRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    selectedTabIndex = dateList.indexOf(selectedDate),
+                    divider = @Composable {
+                        Divider(Modifier.fillMaxWidth())
+                    }
+                ) {
                     dateList.forEachIndexed { index, localDate ->
                         Tab(
                             selected = localDate == selectedDate,
@@ -149,20 +157,21 @@ internal fun AnalyticsPageScreen(
         }
 
         Spacer(modifier = Modifier.size(16.dp))
-
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .align(Alignment.Start),
-            text = stringResource(id = R.string.analytics_tracked_slots_title),
-            style = MaterialTheme.typography.labelLarge
-        )
-        trackedSlotList.forEach {
-            CardContentRow(
-                modifier = Modifier.padding(8.dp),
-                holder = it.toContentRowHolder(LocalContext.current)
+        if (trackedSlotList.isNotEmpty()) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .align(Alignment.Start),
+                text = stringResource(id = R.string.analytics_tracked_slots_title),
+                style = MaterialTheme.typography.labelLarge
             )
+            trackedSlotList.forEach {
+                CardContentRow(
+                    modifier = Modifier.padding(8.dp),
+                    holder = it.toContentRowHolder(LocalContext.current)
+                )
+            }
         }
     }
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "29190264216",
+    "project_id": "factorial-time-tracker",
+    "storage_bucket": "factorial-time-tracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29190264216:android:6b52b36b8d6808027bc7ed",
+        "android_client_info": {
+          "package_name": "tech.eliseo.timetracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29190264216-ioo7eqhdg1c5t39t9kbv26b7thma2640.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7J49Il_Rjc9LonWlxwJLTcgboH2ldpw0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "29190264216-ioo7eqhdg1c5t39t9kbv26b7thma2640.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

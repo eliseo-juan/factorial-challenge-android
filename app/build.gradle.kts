@@ -21,6 +21,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.gradle)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -113,11 +114,17 @@ dependencies {
     implementation(libs.androidx.compose.icons.core)
     implementation(libs.androidx.compose.icons.extended)
 
+    // Firebase
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.ktx)
+    implementation(libs.firebase.database)
+
     // Tooling
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     //Data
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.retrofit)
 
     // Instrumented tests
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
@@ -126,6 +133,7 @@ dependencies {
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito)
 
     // Instrumented tests: jUnit rules and runners
 

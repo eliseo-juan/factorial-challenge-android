@@ -20,13 +20,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DonutLarge
-import androidx.compose.material.icons.filled.LocalOffer
+import androidx.compose.material.icons.rounded.DonutLarge
+import androidx.compose.material.icons.rounded.LocalOffer
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.PostAdd
 import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults.enterAlwaysScrollBehavior
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -47,7 +47,6 @@ import tech.eliseo.timetracker.domain.model.TrackedSlot
 import tech.eliseo.timetracker.ui.coponents.*
 import tech.eliseo.timetracker.ui.formatter.toContentRowHolder
 import tech.eliseo.timetracker.ui.preview.FakePreviewData
-import tech.eliseo.timetracker.ui.screen.add_category.AddCategoryDialog
 import tech.eliseo.timetracker.ui.theme.MyApplicationTheme
 import java.time.LocalDate
 import java.util.*
@@ -84,6 +83,9 @@ fun MainScreen(
             onHistoryButtonClicked = {
                 navController.navigate("analytics")
             },
+            onPopulateDatabase = {
+                viewModel.onUiEvent(TrackedSlotUiEvent.OnPopulateDatabase)
+            }
         )
     }
 }
@@ -99,9 +101,11 @@ internal fun MainScreen(
     onCategoryAssigned: (TrackedSlot, Category) -> Unit = { _, _ -> },
     onCategoryButtonClicked: () -> Unit = {},
     onHistoryButtonClicked: () -> Unit = {},
+    onPopulateDatabase: () -> Unit = {},
 ) {
 
     val scroll = rememberScrollState()
+    var expanded by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
@@ -118,15 +122,38 @@ internal fun MainScreen(
                 actions = {
                     IconButton(onClick = onCategoryButtonClicked) {
                         Icon(
-                            imageVector = Icons.Filled.LocalOffer,
-                            contentDescription = "Localized description"
+                            imageVector = Icons.Rounded.LocalOffer,
+                            contentDescription = null
                         )
                     }
                     IconButton(onClick = onHistoryButtonClicked) {
                         Icon(
-                            imageVector = Icons.Filled.DonutLarge,
-                            contentDescription = "Localized description"
+                            imageVector = Icons.Rounded.DonutLarge,
+                            contentDescription = null
                         )
+                    }
+                    IconButton(onClick = { expanded = true }) {
+                        Icon(
+                            imageVector = Icons.Rounded.MoreVert,
+                            contentDescription = null
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(id = R.string.main_add_random_data)) },
+                            onClick = {
+                                expanded = false
+                                onPopulateDatabase()
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Rounded.PostAdd,
+                                    contentDescription = null
+                                )
+                            })
                     }
                 }
             )

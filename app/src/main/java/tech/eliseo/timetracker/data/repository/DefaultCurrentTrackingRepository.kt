@@ -1,7 +1,7 @@
 package tech.eliseo.timetracker.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import tech.eliseo.timetracker.data.preferences.DataStoreLocalDatasource
+import tech.eliseo.timetracker.data.local.preferences.DataStoreLocalDatasource
 import tech.eliseo.timetracker.domain.model.CurrentTracking
 import tech.eliseo.timetracker.domain.repository.CurrentTrackingRepository
 import java.time.LocalDateTime

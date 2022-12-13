@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
@@ -43,7 +43,7 @@ private fun DefaultPreview() {
         Box(Modifier.padding(16.dp)) {
             NavigationButton(
                 text = "Prueba",
-                icon = Icons.Default.Info
+                icon = Icons.Rounded.Info
             ) {
 
             }

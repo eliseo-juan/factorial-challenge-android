@@ -29,4 +29,7 @@
     <string name="category_dialog_add_cancel">Cancel</string>
     <string name="category_add_title">Create your own category!</string>
     <string name="category_add_button">Create a category</string>
+    <string name="main_add_random_data">Add random data</string>
+    <string name="statistics_title">Statistics</string>
+    <string name="categories_title">Categories</string>
 </resources>

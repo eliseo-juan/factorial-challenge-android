@@ -70,7 +70,7 @@ fun CategoryRow(
                     leadingIcon = {
                         Icon(
                             Icons.Rounded.LocationOff,
-                            contentDescription = "Localized description",
+                            contentDescription = null,
                             Modifier.size(AssistChipDefaults.IconSize)
                         )
                     },
@@ -84,7 +84,7 @@ fun CategoryRow(
                     leadingIcon = {
                         Icon(
                             Icons.Rounded.WifiOff,
-                            contentDescription = "Localized description",
+                            contentDescription = null,
                             Modifier.size(AssistChipDefaults.IconSize)
                         )
                     },

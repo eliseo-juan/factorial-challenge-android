@@ -14,4 +14,7 @@
     <string name="category_dialog_add_cancel">Cancelar</string>
     <string name="category_add_title">¡Crea tu propia categoría!</string>
     <string name="category_add_button">Crear una categoría</string>
+    <string name="main_add_random_data">Añadir datos aleatorios</string>
+    <string name="statistics_title">Estadísticas</string>
+    <string name="categories_title">Categories</string>
 </resources>

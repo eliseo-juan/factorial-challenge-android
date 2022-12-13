@@ -19,6 +19,10 @@ kotlin = "1.7.20"
 ksp = "1.7.20-1.0.8"
 dataStore = "1.0.0"
 accompanist = "0.28.0"
+googleServices = "4.3.13"
+firebase = "31.1.1"
+retrofit = "2.9.0"
+mockito = "4.9.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
@@ -51,6 +55,11 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+firebase = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
+firebase-ktx = { module = "com.google.firebase:firebase-database-ktx" }
+firebase-database = { module = "com.google.firebase:firebase-database" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -59,3 +68,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 hilt-gradle = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }

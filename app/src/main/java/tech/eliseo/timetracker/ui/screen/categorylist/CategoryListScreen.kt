@@ -16,20 +16,16 @@
 
 package tech.eliseo.timetracker.ui.screen.categorylist
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
@@ -100,7 +96,7 @@ internal fun CategoryListScreen(
             TopAppBar(
                 title = {
                     Text(
-                        "Categorías",
+                        stringResource(id = R.string.categories_title),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -108,8 +104,8 @@ internal fun CategoryListScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackButtonClicked) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Localized description"
+                            imageVector = Icons.Rounded.ArrowBack,
+                            contentDescription = null
                         )
                     }
                 },
@@ -120,7 +116,7 @@ internal fun CategoryListScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = onAddButtonClicked,
-                icon = { Icon(Icons.Rounded.Add, "Localized Description") },
+                icon = { Icon(Icons.Rounded.Add, null) },
                 text = { Text(text = stringResource(id = R.string.category_add_button)) },
             )
         }

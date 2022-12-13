@@ -9,7 +9,7 @@ object FakePreviewData {
 
     fun getDayListOfTrackedSlot(date: LocalDate): List<TrackedSlot> {
         val categories = getCategories()
-        return (0..(3..10).random()).map {
+        return (1..(3..10).random()).map {
             val startDate = date.atTime((0..23).random(), (0..59).random())
             TrackedSlot(
                 startDate = startDate,
@@ -21,7 +21,7 @@ object FakePreviewData {
 
     fun getListOfTrackedSlot(): List<TrackedSlot> {
         val startDate = LocalDate.now()
-        return (0..10).map {
+        return (1..10).map {
             getDayListOfTrackedSlot(startDate.minusDays(it.toLong()))
         }.flatten()
     }
