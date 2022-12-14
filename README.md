@@ -56,8 +56,8 @@ I didn't developed this features, but I want to "validate" this kind of features
 
 Using main button to indicate the state. Pretty visual IMHO:
 <p float="center">
-    <img src=".github/screenshot/button_state_end.png" width="200" />
     <img src=".github/screenshot/button_state_start.png" width="200" />
+    <img src=".github/screenshot/button_state_end.png" width="200" />
 </p>
 
 I didn't created a dialog to modify a Tracked Slot, because this is a Tech Test, but probably I would use this component:
