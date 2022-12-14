@@ -1,36 +1,38 @@
 package tech.eliseo.timetracker.data.network.datasource
 
-import com.google.firebase.database.DatabaseReference
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.trySendBlocking
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
+import tech.eliseo.timetracker.data.network.dto.toHashMap
+import tech.eliseo.timetracker.data.network.mapper.TrackedSlotNetworkMapper
 import tech.eliseo.timetracker.domain.model.TrackedSlot
+import java.io.IOException
 import javax.inject.Inject
 
 class FirebaseTrackedSlotDatasource @Inject constructor(
-    val database: DatabaseReference
-) : NetworkTrackedSlotDatasource {
+    private val db: FirebaseFirestore
+) : NetworkTrackedSlotDatasource, TrackedSlotNetworkMapper {
 
-    @ExperimentalCoroutinesApi
-    override fun saveTrackedSlotList(trackedSlotList: List<TrackedSlot>) = callbackFlow {
-        database.setValue(trackedSlotList) { error, ref ->
-            if (error != null) {
-                this@callbackFlow.cancel(error.message, error.toException())
-            } else {
-                this@callbackFlow.trySendBlocking(Unit)
-            }
-        }
+    override suspend fun saveTrackedSlotList(trackedSlotList: List<TrackedSlot>) {
+        db.collection("users")
+            .document("factorial_test_user")
+            .collection("trackedSlots")
+            .add(
+                trackedSlotList.map { it.toNetworkTrackedSlot().toHashMap() }
+            )
+            .addOnFailureListener {
+                throw IOException()
+            }.await()
     }
 
-    override fun saveTrackedSlot(trackedSlot: TrackedSlot): Flow<Unit> = callbackFlow {
-        database.setValue(trackedSlot) { error, ref ->
-            if (error != null) {
-                this@callbackFlow.cancel(error.message, error.toException())
-            } else {
-                this@callbackFlow.trySendBlocking(Unit)
-            }
-        }
+    override suspend fun saveTrackedSlot(trackedSlot: TrackedSlot) {
+        db.collection("users")
+            .document("factorial_test_user")
+            .collection("trackedSlots")
+            .add(
+                trackedSlot.toNetworkTrackedSlot().toHashMap()
+            )
+            .addOnFailureListener {
+                throw IOException()
+            }.await()
     }
 }

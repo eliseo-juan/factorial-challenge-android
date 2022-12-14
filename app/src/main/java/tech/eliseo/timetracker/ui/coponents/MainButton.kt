@@ -11,8 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tech.eliseo.timetracker.R
 import tech.eliseo.timetracker.ui.theme.MyApplicationTheme
 
 @Composable
@@ -36,8 +38,8 @@ fun MainButton(
     ) {
         Text(
             text = when (buttonState) {
-                MainButtonState.Idle -> "Inicio"
-                MainButtonState.Started -> "Fin"
+                MainButtonState.Idle -> stringResource(id = R.string.main_button_start)
+                MainButtonState.Started -> stringResource(id = R.string.main_button_end)
             }.uppercase(),
             style = MaterialTheme.typography.displayLarge
         )

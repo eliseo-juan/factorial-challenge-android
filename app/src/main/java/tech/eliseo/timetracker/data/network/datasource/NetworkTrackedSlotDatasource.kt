@@ -1,11 +1,10 @@
 package tech.eliseo.timetracker.data.network.datasource
 
-import kotlinx.coroutines.flow.Flow
 import tech.eliseo.timetracker.domain.model.TrackedSlot
 
 interface NetworkTrackedSlotDatasource {
 
-    fun saveTrackedSlotList(trackedSlotList: List<TrackedSlot>) : Flow<Unit>
+    suspend fun saveTrackedSlotList(trackedSlotList: List<TrackedSlot>)
 
-    fun saveTrackedSlot(trackedSlot: TrackedSlot) : Flow<Unit>
+    suspend fun saveTrackedSlot(trackedSlot: TrackedSlot)
 }

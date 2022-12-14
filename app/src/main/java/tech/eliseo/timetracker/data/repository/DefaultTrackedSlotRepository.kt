@@ -34,7 +34,7 @@ import javax.inject.Inject
 
 class DefaultTrackedSlotRepository @Inject constructor(
     private val trackedSlotDao: TrackedSlotDao,
-    private val datasource: NetworkTrackedSlotDatasource,
+    private val networkDatasource: NetworkTrackedSlotDatasource,
     private val categoryDao: CategoryDao
 ) : TrackedSlotRepository, TrackedSlotEntityMapper, CategoryEntityMapper {
 
@@ -80,7 +80,7 @@ class DefaultTrackedSlotRepository @Inject constructor(
 
     override suspend fun add(trackedSlot: TrackedSlot) {
         trackedSlotDao.insertTrackedSlot(trackedSlot.toTrackedSlotEntity())
-        datasource.saveTrackedSlot(trackedSlot)
+        networkDatasource.saveTrackedSlot(trackedSlot)
     }
 
     private fun getTrackedSlotCategoryMergeAndMapper(): (List<TrackedSlotEntity>, List<CategoryEntity>) -> List<TrackedSlot> =

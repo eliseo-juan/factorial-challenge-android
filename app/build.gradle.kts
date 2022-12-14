@@ -118,7 +118,7 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase))
     implementation(libs.firebase.ktx)
-    implementation(libs.firebase.database)
+    implementation(libs.firebase.firestore)
 
     // Tooling
     debugImplementation(libs.androidx.compose.ui.tooling)

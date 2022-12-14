@@ -16,8 +16,8 @@
 
 package tech.eliseo.timetracker.data.network
 
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
@@ -33,8 +33,8 @@ import tech.eliseo.timetracker.data.network.service.TrackedSlotService
 class NetworkModule {
 
     @Provides
-    fun provideDatabaseReference(): DatabaseReference {
-        return Firebase.database.reference
+    fun provideDatabaseReference(): FirebaseFirestore {
+        return Firebase.firestore
     }
 
     @Provides
