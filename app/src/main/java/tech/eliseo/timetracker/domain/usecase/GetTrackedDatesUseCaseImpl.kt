@@ -12,7 +12,8 @@ class GetTrackedDatesUseCaseImpl @Inject constructor(
 ) : GetTrackedDatesUseCase {
     override fun invoke(): Flow<List<LocalDate>> =
         repository.getTrackedDates().map { list ->
-            list.firstOrNull().let { localDate ->
+            if (list.isEmpty()) return@map listOf(LocalDate.now())
+            return@map list.firstOrNull().let { localDate ->
                 localDate?.let { ChronoUnit.DAYS.between(localDate, LocalDate.now()).toInt() }
                     ?: 1
             }.let { numberOfDays ->

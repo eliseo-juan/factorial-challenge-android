@@ -25,6 +25,6 @@
     <string name="smoke_feature_message">Esta funcionalidad aún no está disponible, si te parece interesante estará disponible próximamente</string>
     <string name="smoke_feature_positive_button">¡Lo quiero!</string>
     <string name="smoke_feature_negative_button">No es interesante</string>
-    <string name="smoke_feature_wifi">Automatización por ubicación</string>
+    <string name="smoke_feature_wifi">Automatización por red WiFi</string>
     <string name="smoke_feature_geofences">Automatización por ubicación</string>
 </resources>
