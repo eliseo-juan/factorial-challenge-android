@@ -11,8 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tech.eliseo.timetracker.R
 import tech.eliseo.timetracker.domain.model.Category
 import tech.eliseo.timetracker.ui.formatter.CategoryFormatter
 import tech.eliseo.timetracker.ui.preview.FakePreviewData
@@ -22,7 +24,9 @@ import tech.eliseo.timetracker.ui.theme.MyApplicationTheme
 @Composable
 fun CategoryRow(
     modifier: Modifier = Modifier,
-    category: Category
+    category: Category,
+    onWiFiAutomation: () -> Unit = {},
+    onLocationAutomation: () -> Unit = {}
 ) {
     Card(
         modifier = modifier
@@ -53,7 +57,7 @@ fun CategoryRow(
             Text(
                 modifier = Modifier
                     .padding(start = 16.dp, top = 16.dp, end = 16.dp),
-                text = "Automatizaciones",
+                text = stringResource(id = R.string.category_automation_title),
                 style = MaterialTheme.typography.labelMedium
             )
             Row(
@@ -66,7 +70,7 @@ fun CategoryRow(
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
                         .height(32.dp),
-                    label = { Text(text = "Localización") },
+                    label = { Text(text = stringResource(id = R.string.category_automation_geofence)) },
                     leadingIcon = {
                         Icon(
                             Icons.Rounded.LocationOff,
@@ -74,13 +78,13 @@ fun CategoryRow(
                             Modifier.size(AssistChipDefaults.IconSize)
                         )
                     },
-                    onClick = {}
+                    onClick = onLocationAutomation
                 )
                 AssistChip(
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
                         .height(32.dp),
-                    label = { Text(text = "Red WiFi") },
+                    label = { Text(text = stringResource(id = R.string.category_automation_wifi)) },
                     leadingIcon = {
                         Icon(
                             Icons.Rounded.WifiOff,
@@ -88,7 +92,7 @@ fun CategoryRow(
                             Modifier.size(AssistChipDefaults.IconSize)
                         )
                     },
-                    onClick = {}
+                    onClick = onWiFiAutomation
                 )
             }
         }

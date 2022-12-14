@@ -31,7 +31,15 @@
     <string name="category_dialog_add_cancel">Cancel</string>
     <string name="category_add_title">Create your own category!</string>
     <string name="category_add_button">Create a category</string>
+    <string name="category_automation_title">Automations</string>
+    <string name="category_automation_geofence">Location</string>
+    <string name="category_automation_wifi">WiFi Network</string>
     <string name="main_add_random_data">Add random data</string>
     <string name="statistics_title">Statistics</string>
     <string name="categories_title">Categories</string>
+    <string name="smoke_feature_message">This feature is not yet available, if you find it interesting it will be available soon.</string>
+    <string name="smoke_feature_positive_button">I want it!</string>
+    <string name="smoke_feature_negative_button">Not interesting</string>
+    <string name="smoke_feature_wifi">Automatic by WiFi network</string>
+    <string name="smoke_feature_geofences">Automatic by location</string>
 </resources>

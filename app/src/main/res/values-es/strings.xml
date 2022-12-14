@@ -16,7 +16,15 @@
     <string name="category_dialog_add_cancel">Cancelar</string>
     <string name="category_add_title">¡Crea tu propia categoría!</string>
     <string name="category_add_button">Crear una categoría</string>
+    <string name="category_automation_title">Automatizaciones</string>
+    <string name="category_automation_geofence">Localización</string>
+    <string name="category_automation_wifi">Red WiFi</string>
     <string name="main_add_random_data">Añadir datos aleatorios</string>
     <string name="statistics_title">Estadísticas</string>
     <string name="categories_title">Categories</string>
+    <string name="smoke_feature_message">Esta funcionalidad aún no está disponible, si te parece interesante estará disponible próximamente</string>
+    <string name="smoke_feature_positive_button">¡Lo quiero!</string>
+    <string name="smoke_feature_negative_button">No es interesante</string>
+    <string name="smoke_feature_wifi">Automatización por ubicación</string>
+    <string name="smoke_feature_geofences">Automatización por ubicación</string>
 </resources>

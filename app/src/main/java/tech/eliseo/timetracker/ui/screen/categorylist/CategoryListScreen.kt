@@ -25,8 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,6 +40,7 @@ import tech.eliseo.timetracker.domain.model.Category
 import tech.eliseo.timetracker.ui.coponents.*
 import tech.eliseo.timetracker.ui.preview.FakePreviewData
 import tech.eliseo.timetracker.ui.screen.add_category.AddCategoryDialog
+import tech.eliseo.timetracker.ui.screen.smoke_test_dialog.SmokeTestDialog
 import tech.eliseo.timetracker.ui.theme.MyApplicationTheme
 import java.util.*
 
@@ -80,6 +80,9 @@ internal fun CategoryListScreen(
     onAddButtonClicked: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
+    var geofenceDialogOpen by remember { mutableStateOf(false) }
+    var wifiDialogOpen by remember { mutableStateOf(false) }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -126,10 +129,29 @@ internal fun CategoryListScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             list.forEach { category ->
-                CategoryRow(modifier = Modifier.padding(8.dp), category = category)
+                CategoryRow(
+                    modifier = Modifier.padding(8.dp),
+                    category = category,
+                    onLocationAutomation = { geofenceDialogOpen = true },
+                    onWiFiAutomation = { wifiDialogOpen = true },
+                )
             }
             Spacer(modifier = Modifier.size(72.dp))
         }
+    }
+    if (geofenceDialogOpen) {
+        SmokeTestDialog(
+            title = stringResource(id = R.string.smoke_feature_geofences),
+            onConfirmRequest = { geofenceDialogOpen = false },
+            onDismissRequest = { geofenceDialogOpen = false }
+        )
+    }
+    if (wifiDialogOpen) {
+        SmokeTestDialog(
+            title = stringResource(id = R.string.smoke_feature_wifi),
+            onConfirmRequest = { wifiDialogOpen = false },
+            onDismissRequest = { wifiDialogOpen = false }
+        )
     }
 }
 
