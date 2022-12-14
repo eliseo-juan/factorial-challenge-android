@@ -55,11 +55,15 @@ I didn't developed this features, but I want to "validate" this kind of features
 ### Some interesting details
 
 Using main button to indicate the state. Pretty visual IMHO:
-<img src=".github/screenshot/button_state_end.png" width="200" />
-<img src=".github/screenshot/button_state_start.png" width="200" />
+<p float="center">
+    <img src=".github/screenshot/button_state_end.png" width="200" />
+    <img src=".github/screenshot/button_state_start.png" width="200" />
+</p>
 
 I didn't created a dialog to modify a Tracked Slot, because this is a Tech Test, but probably I would use this component:
-<img src=".github/screenshot/tracked_slot_dialog.png" width="200" />
+<p float="center">
+    <img src=".github/screenshot/tracked_slot_dialog.png" width="200" />
+</p>
 The magic of using compose and creating components in an easy way.
 
 ### Possible next steps
