@@ -32,19 +32,10 @@ class CategoryListViewModel @Inject constructor(
     private val createCategoryUseCase: CreateCategoryUseCase,
 ) : ViewModel() {
 
-    private val categoryDialogOpen = MutableStateFlow(false)
+    val categoryDialogOpenState = MutableStateFlow(false)
 
-    val uiState: StateFlow<CategoryListUiState> =
-        combine(
-            getCategoryListUseCase(),
-            categoryDialogOpen
-        ) { categories, isDialogOpen ->
-            CategoryListUiState.Success(
-                list = categories,
-                addCategoryDialogOpen = isDialogOpen
-            )
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CategoryListUiState.Loading)
+    val uiState: StateFlow<List<Category>> = getCategoryListUseCase()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun onUiEvent(event: CategoryListUiEvent) {
         when (event) {
@@ -56,30 +47,22 @@ class CategoryListViewModel @Inject constructor(
 
     private fun onAddCategoryClicked() {
         viewModelScope.launch {
-            categoryDialogOpen.value = true
+            categoryDialogOpenState.value = true
         }
     }
 
     private fun onOnRequestCloseDialog() {
         viewModelScope.launch {
-            categoryDialogOpen.value = false
+            categoryDialogOpenState.value = false
         }
     }
 
     private fun createCategory(name: String) {
         viewModelScope.launch {
             createCategoryUseCase(name)
-            categoryDialogOpen.value = false
+            categoryDialogOpenState.value = false
         }
     }
-}
-
-sealed class CategoryListUiState {
-    object Loading : CategoryListUiState()
-    data class Success(
-        val list: List<Category>,
-        val addCategoryDialogOpen: Boolean = false,
-    ) : CategoryListUiState()
 }
 
 sealed class CategoryListUiEvent {

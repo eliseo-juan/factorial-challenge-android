@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalLifecycleComposeApi::class)
+
 package tech.eliseo.timetracker.ui.screen.categorylist
 
 import androidx.compose.foundation.layout.*
@@ -25,16 +27,14 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle.State.STARTED
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import tech.eliseo.timetracker.R
 import tech.eliseo.timetracker.domain.model.Category
@@ -50,33 +50,23 @@ fun CategoryListScreen(
     navController: NavController,
     viewModel: CategoryListViewModel = hiltViewModel()
 ) {
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val state by produceState<CategoryListUiState>(
-        initialValue = CategoryListUiState.Loading,
-        key1 = lifecycle,
-        key2 = viewModel
-    ) {
-        lifecycle.repeatOnLifecycle(state = STARTED) {
-            viewModel.uiState.collect { value = it }
-        }
-    }
-    if (state is CategoryListUiState.Success) {
-        CategoryListScreen(
-            modifier = modifier,
-            list = (state as CategoryListUiState.Success).list,
-            addCategoryDialogOpen = (state as CategoryListUiState.Success).addCategoryDialogOpen,
-            onBackButtonClicked = { navController.popBackStack() },
-            onAddButtonClicked = { viewModel.onUiEvent(CategoryListUiEvent.OnAddCategoryClicked) },
-            onDismissRequest = { viewModel.onUiEvent(CategoryListUiEvent.OnRequestCloseDialog) },
-            onRequestConfirmButton = {
-                viewModel.onUiEvent(
-                    CategoryListUiEvent.OnConfirmNewCategoryClicked(
-                        it
-                    )
+    val categoriesState by viewModel.uiState.collectAsStateWithLifecycle()
+    val addCategoryDialogOpenState by viewModel.categoryDialogOpenState.collectAsStateWithLifecycle()
+    CategoryListScreen(
+        modifier = modifier,
+        list = categoriesState,
+        addCategoryDialogOpen = addCategoryDialogOpenState,
+        onBackButtonClicked = { navController.popBackStack() },
+        onAddButtonClicked = { viewModel.onUiEvent(CategoryListUiEvent.OnAddCategoryClicked) },
+        onDismissRequest = { viewModel.onUiEvent(CategoryListUiEvent.OnRequestCloseDialog) },
+        onRequestConfirmButton = {
+            viewModel.onUiEvent(
+                CategoryListUiEvent.OnConfirmNewCategoryClicked(
+                    it
                 )
-            },
-        )
-    }
+            )
+        },
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

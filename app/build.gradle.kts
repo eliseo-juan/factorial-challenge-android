@@ -113,6 +113,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.icons.core)
     implementation(libs.androidx.compose.icons.extended)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
 
     // Firebase
     implementation(platform(libs.firebase))
