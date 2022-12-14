@@ -1,7 +1,6 @@
 package tech.eliseo.timetracker.ui.formatter
 
 
-import org.junit.Assert
 import org.junit.Test
 import tech.eliseo.timetracker.domain.model.TrackedSlot
 import java.time.LocalDateTime

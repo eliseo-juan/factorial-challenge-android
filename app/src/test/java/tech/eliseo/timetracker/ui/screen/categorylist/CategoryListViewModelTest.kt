@@ -1,13 +1,8 @@
 package tech.eliseo.timetracker.ui.screen.categorylist
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -19,52 +14,61 @@ import tech.eliseo.timetracker.domain.model.CategoryIcon
 import tech.eliseo.timetracker.domain.usecase.CreateCategoryUseCase
 import tech.eliseo.timetracker.domain.usecase.GetCategoryListUseCase
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CategoryListViewModelTest {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `when screen is shown first state is Loading`() = runTest {
-        val getCategoryListUseCase = mock(GetCategoryListUseCase::class.java)
-        val createCategoryUseCase = mock(CreateCategoryUseCase::class.java)
-        val channel = Channel<List<Category>>()
-        val flow = channel.consumeAsFlow()
-        `when`(getCategoryListUseCase()).thenReturn(flow)
-        val viewModel = CategoryListViewModel(
-            getCategoryListUseCase,
-            createCategoryUseCase
-        )
-        launch {
-            channel.send(emptyList())
-        }
-        assertEquals(viewModel.uiState.first(), CategoryListUiState.Loading)
+    @Before
+    fun setUp() {
+        Dispatchers.setMain(TestCoroutineDispatcher())
+    }
+
+    @After
+    fun cleanup() {
+        Dispatchers.resetMain()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `when screen is shown after loading state is Categories`() = runTest {
+    fun `when screen is shown first state is Loading`() = runTest() {
         val getCategoryListUseCase = mock(GetCategoryListUseCase::class.java)
         val createCategoryUseCase = mock(CreateCategoryUseCase::class.java)
         `when`(getCategoryListUseCase()).thenReturn(flow {
-            emit(
-                listOf(
-                    Category(
-                        id = 10,
-                        title = "title",
-                        color = 0xFFFFFF,
-                        icon = CategoryIcon.DEFAULT
-                    )
-                )
-            )
+            emit(emptyList())
         })
         val viewModel = CategoryListViewModel(
             getCategoryListUseCase,
             createCategoryUseCase
         )
-        assertEquals(
-            (viewModel.uiState.drop(1).first() as CategoryListUiState.Success).list.first().id,
-            10
-        )
+        assertEquals(viewModel.uiState.first(), CategoryListUiState.Loading)
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `when screen is shown after loading state is Categories`() =
+        runTest() {
+            val getCategoryListUseCase = mock(GetCategoryListUseCase::class.java)
+            val createCategoryUseCase = mock(CreateCategoryUseCase::class.java)
+            `when`(getCategoryListUseCase()).thenReturn(flow {
+                emit(
+                    listOf(
+                        Category(
+                            id = 10,
+                            title = "title",
+                            color = 0xFFFFFF,
+                            icon = CategoryIcon.DEFAULT
+                        )
+                    )
+                )
+            })
+            val viewModel = CategoryListViewModel(
+                getCategoryListUseCase,
+                createCategoryUseCase
+            )
+            assertEquals(
+                (viewModel.uiState.first() as CategoryListUiState.Success).list.first().id,
+                10
+            )
+        }
 
     @Test
     fun `if OnAddCategoryClicked`() = runTest {
@@ -78,10 +82,12 @@ class CategoryListViewModelTest {
             getCategoryListUseCase,
             createCategoryUseCase
         )
+
         viewModel.onUiEvent(CategoryListUiEvent.OnAddCategoryClicked)
 
         assertTrue((viewModel.uiState.value as CategoryListUiState.Success).addCategoryDialogOpen)
     }
+
 
 
 }
