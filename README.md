@@ -66,9 +66,9 @@ I didn't created a dialog to modify a Tracked Slot, because this is a Tech Test,
 </p>
 The magic of using compose and creating components in an easy way.
 
-### Possible next steps
+# Possible next steps: [Project](https://github.com/users/eliseo-juan/projects/1/views/2)
 
-This app has a lot of possibilities, I'm adding some of the possible next steps in this Project: ** [Project](https://github.com/users/eliseo-juan/projects/1/views/2) **
+This app has a lot of possibilities, I'm adding some of the possible next steps in this Project: [Project](https://github.com/users/eliseo-juan/projects/1/views/2)
 
 # Architecture
 
