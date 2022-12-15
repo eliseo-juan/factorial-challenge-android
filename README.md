@@ -50,7 +50,9 @@ in this example we are Injecting the Network datasource that could be:
 
 As you can check in the second screenshot, I've added some smoke test with a cool feature. Automagic tracking, based on geofences or wifi network.
 I didn't developed this features, but I want to "validate" this kind of features before implementing it. (Honestly I'm not tracking data, but this it's an example of using smoke tests)
-<img src=".github/screenshot/smoke_test.png" width="200" />
+<p float="center">
+  <img src=".github/screenshot/smoke_test.png" width="200" />
+</p>
 
 ### Some interesting details
 
